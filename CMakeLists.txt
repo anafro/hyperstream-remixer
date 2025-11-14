@@ -1,0 +1,10 @@
+cmake_minimum_required(VERSION 3.10)
+
+project(HyperstreamRemixer)
+find_package(SDL3 CONFIG REQUIRED)
+find_package(SDL2_mixer CONFIG REQUIRED)
+file(GLOB_RECURSE SOURCES "src/HyperstreamRemixer/*.cpp" "src/HyperstreamRemixer/*.c++")
+add_executable(HyperstreamRemixer ${SOURCES})
+target_include_directories(HyperstreamRemixer PRIVATE src)
+target_link_libraries(HyperstreamRemixer PRIVATE SDL3::SDL3)
+target_link_libraries(HyperstreamRemixer PRIVATE $<IF:$<TARGET_EXISTS:SDL2_mixer::SDL2_mixer>,SDL2_mixer::SDL2_mixer,SDL2_mixer::SDL2_mixer-static>)

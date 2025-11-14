@@ -1,0 +1,8 @@
+{
+    "version": "1.0.0",
+    "name": "hyperstream-remixer",
+    "dependencies": [
+        "sdl3",
+        "sdl2-mixer"
+    ]
+}
