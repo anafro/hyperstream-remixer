@@ -4,6 +4,6 @@
 namespace HyperstreamRemixer::Audio::Exceptions {
     class SDLInitException final : public HyperstreamRemixer::Exceptions::HyperstreamException {
     public:
-        explicit SDLInitException();
+        explicit SDLInitException(const std::string& message);
     };
 }

@@ -2,6 +2,6 @@
 
 
 namespace HyperstreamRemixer::Audio::Exceptions {
-    SDLInitException::SDLInitException()
-            : HyperstreamException("SDL initialization failed.") {}
+    SDLInitException::SDLInitException(const std::string& message)
+            : HyperstreamException(message) {}
 }
