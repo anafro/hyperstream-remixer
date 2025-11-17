@@ -4,5 +4,7 @@
     "dependencies": [
         "sdl3",
         "sdl2-mixer"
+        "sdl2",
+        "sdl2-mixer",
     ]
 }
