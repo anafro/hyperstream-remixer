@@ -1,0 +1,3 @@
+[submodule "src/Freeverb"]
+	path = src/Freeverb
+	url = https://github.com/anafro/freeverb-modern-components
