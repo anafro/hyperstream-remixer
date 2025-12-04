@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <limits>
 
 namespace HyperstreamRemixer::Audio::Waveform {
     typedef int16_t wf_amplitude_t;
@@ -9,4 +10,6 @@ namespace HyperstreamRemixer::Audio::Waveform {
     typedef int32_t wf_sample_rate_t;
     typedef int32_t wf_frequency_t;
     typedef int32_t wf_size_t;
+
+    constexpr wf_amplitude_t WF_AMPLITUDE_MAX = std::numeric_limits<wf_amplitude_t>::max();
 }

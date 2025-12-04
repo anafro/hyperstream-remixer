@@ -1,10 +1,9 @@
 #pragma once
-#define SDL_MAIN_HANDLED
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
-#include "Exceptions/already-initialized-exception.h++"
-#include "Exceptions/not-initialized-exception.h++"
-#include "Exceptions/sdl-init-exception.h++"
+#include "../Exceptions/already-initialized-exception.h++"
+#include "../Exceptions/not-initialized-exception.h++"
+#include "../Exceptions/sdl-init-exception.h++"
 
 using HyperstreamRemixer::Audio::Exceptions::AlreadyInitializedException;
 using HyperstreamRemixer::Audio::Exceptions::NotInitializedException;
