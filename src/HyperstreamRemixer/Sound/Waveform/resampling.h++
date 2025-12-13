@@ -2,7 +2,7 @@
 #include <cmath>
 #include "waveform-types.h++"
 
-namespace HyperstreamRemixer::Audio::Waveform {
+namespace HyperstreamRemixer::Sound::Waveform {
     inline wf_amplitude_t interpolate_catmull_rom(
         const wf_amplitude_t a,
         const wf_amplitude_t b,

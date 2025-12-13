@@ -5,11 +5,11 @@
 #include "../Exceptions/not-initialized-exception.h++"
 #include "../Exceptions/sdl-init-exception.h++"
 
-using HyperstreamRemixer::Audio::Exceptions::AlreadyInitializedException;
-using HyperstreamRemixer::Audio::Exceptions::NotInitializedException;
-using HyperstreamRemixer::Audio::Exceptions::SDLInitException;
+using HyperstreamRemixer::Sound::Exceptions::AlreadyInitializedException;
+using HyperstreamRemixer::Sound::Exceptions::NotInitializedException;
+using HyperstreamRemixer::Sound::Exceptions::SDLInitException;
 
-namespace HyperstreamRemixer::Audio {
+namespace HyperstreamRemixer::Sound {
     static bool remixer_is_initialized = false;
 
     static void initialize_remixer() {

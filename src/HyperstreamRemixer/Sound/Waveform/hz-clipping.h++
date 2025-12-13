@@ -2,7 +2,7 @@
 #include "HyperstreamRemixer/Math/factor-clipping.h++"
 
 
-namespace HyperstreamRemixer::Audio::Waveform {
+namespace HyperstreamRemixer::Sound::Waveform {
     using namespace Math;
 
     inline float clip_hz(const float hz) {

@@ -2,7 +2,7 @@
 #include <limits>
 
 
-namespace HyperstreamRemixer::Audio::Waveform {
+namespace HyperstreamRemixer::Sound::Waveform {
     inline wf_amplitude_t clip_amplitude(const wf_overflown_amplitude_t overflown_amplitude) {
         constexpr wf_amplitude_t max_amplitude = std::numeric_limits<wf_amplitude_t>::max();
         constexpr wf_amplitude_t min_amplitude = std::numeric_limits<wf_amplitude_t>::min();

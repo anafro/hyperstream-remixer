@@ -2,13 +2,13 @@
 #include <iostream>
 #include <limits>
 
-#include "HyperstreamRemixer/Audio/Waveform/amplitude-clipping.h++"
-#include "HyperstreamRemixer/Audio/Waveform/waveform-types.h++"
+#include "HyperstreamRemixer/Sound/Waveform/amplitude-clipping.h++"
+#include "HyperstreamRemixer/Sound/Waveform/waveform-types.h++"
 #include "HyperstreamRemixer/Math/clipping.h++"
 #include "HyperstreamRemixer/Math/sgn.h++"
 
 
-namespace HyperstreamRemixer::Audio::Adapters {
+namespace HyperstreamRemixer::Sound::Adapters {
     using namespace Waveform;
     using namespace Math;
     typedef float fv_amplitude_t;

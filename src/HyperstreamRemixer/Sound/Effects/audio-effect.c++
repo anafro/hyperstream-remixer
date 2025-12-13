@@ -1,6 +1,6 @@
 #include "audio-effect.h++"
 
 
-namespace HyperstreamRemixer::Audio::Effects {
+namespace HyperstreamRemixer::Sound::Effects {
     // nothing to implement //
 }

@@ -1,10 +1,10 @@
 #pragma once
 #include "HyperstreamRemixer/Arrays/safe-access.h++"
-#include "HyperstreamRemixer/Audio/Waveform/sample-rate.h++"
-#include "HyperstreamRemixer/Audio/Waveform/waveform-types.h++"
+#include "HyperstreamRemixer/Sound/Waveform/sample-rate.h++"
+#include "HyperstreamRemixer/Sound/Waveform/waveform-types.h++"
 #include "HyperstreamRemixer/Math/factor-clipping.h++"
 
-namespace HyperstreamRemixer::Audio::Filters {
+namespace HyperstreamRemixer::Sound::Filters {
     using namespace Arrays;
     using namespace Waveform;
     using namespace Math;

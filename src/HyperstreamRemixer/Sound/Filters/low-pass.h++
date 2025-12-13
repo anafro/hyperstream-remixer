@@ -7,7 +7,7 @@
 #include "HyperstreamRemixer/Audio/Waveform/waveform-types.h++"
 
 
-namespace HyperstreamRemixer::Audio::Filters {
+namespace HyperstreamRemixer::Sound::Filters {
     using namespace Waveform;
 
     inline void low_pass(wf_amplitude_t* audio_buffer, const wf_samples_t sample_index, const wf_sample_rate_t sample_rate, float cutoff_hz) {

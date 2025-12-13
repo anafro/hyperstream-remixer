@@ -2,10 +2,10 @@
 #include <string>
 #include <vector>
 #include <SDL2/SDL.h>
-#include <HyperstreamRemixer/Audio/Effects/audio-effect.h++>
+#include <HyperstreamRemixer/Sound/Effects/audio-effect.h++>
 #include <HyperstreamRemixer/Macros/coerce-inline.h++>
 
-namespace HyperstreamRemixer::Audio::Buffering {
+namespace HyperstreamRemixer::Sound::Buffering {
     typedef std::byte audio_fx_behavior_t;
     constexpr audio_fx_behavior_t APPLY_FX_NOW { 0x00 };
     constexpr audio_fx_behavior_t APPLY_FX_ON_PLAY { 0x01 };
@@ -25,8 +25,8 @@ namespace HyperstreamRemixer::Audio::Buffering {
         );
 
         ~Audio();
-        void play() const;
-        static Audio* from_mp3_file(std::vector<AudioEffect*> &&effects, const std::string& file_path);
+        void play();
+        static Audio* from_mp3_file(std::initializer_list<AudioEffect*> &&effects, const std::string& file_path, audio_fx_behavior_t fx_behavior = APPLY_FX_NOW);
 
     protected:
         std::vector<AudioEffect*> effects;
@@ -38,7 +38,7 @@ namespace HyperstreamRemixer::Audio::Buffering {
         audio_fx_behavior_t fx_behavior;
 
     private:
-        Allocation<wf_amplitude_t> apply_effects(Allocation<wf_amplitude_t>& buffer) const;
-        __REMIXER_COERCE_INLINE wf_samples_t get_samples() const;
+        Allocation<wf_amplitude_t> apply_effects(const Allocation<wf_amplitude_t>& buffer) const;
+        [[nodiscard]] __REMIXER_COERCE_INLINE wf_samples_t get_samples() const;
     };
 }

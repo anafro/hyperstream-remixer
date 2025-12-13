@@ -1,7 +1,7 @@
 #pragma once
 #include <HyperstreamRemixer/Exceptions/hyperstream-exception.h++>
 
-namespace HyperstreamRemixer::Audio::Effects::Exceptions {
+namespace HyperstreamRemixer::Sound::Effects::Exceptions {
     using namespace HyperstreamRemixer::Exceptions;
 
     class EQAsciiFormatException final : public HyperstreamException {

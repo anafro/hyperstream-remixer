@@ -1,6 +1,9 @@
 #include "allocation-clone-copy-exception.h++"
 
 
-namespace  {
-    
+namespace HyperstreamRemixer::Memory::Exceptions {
+    AllocationCloneCopyException::AllocationCloneCopyException(const std::string &message)
+        : HyperstreamException(message) {}
 }
+
+
