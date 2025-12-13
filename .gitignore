@@ -1,2 +1,6 @@
 CMakeUsersPresets.json
-/cmake-build-*
+.cache/
+build/
+vcpkg_installed/
+imgui.ini
+.vcpkg-root
