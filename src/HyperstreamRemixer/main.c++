@@ -1,35 +1,26 @@
-#include <chrono>
+#include <HyperstreamRemixer/Debug/visual-audio-debugger.h++>
+#include <HyperstreamRemixer/Sound/Buffering/audio.h++>
+#include <HyperstreamRemixer/Sound/Effects/eq.h++>
+#include <HyperstreamRemixer/Sound/Mp3/audio-system.h++>
 #include <iostream>
-#include <vector>
-#include <memory>
-#include <HyperstreamRemixer/Audio/audio-system.h++>
-#include <HyperstreamRemixer/Audio/Buffering/audio.h++>
-#include <HyperstreamRemixer/Audio/Effects/reverb.h++>
 
+using namespace std::chrono_literals;
+using namespace HyperstreamRemixer::Sound::Buffering;
+using namespace HyperstreamRemixer::Exceptions;
+using namespace HyperstreamRemixer::Sound;
+using namespace HyperstreamRemixer::Sound::Effects;
+using namespace HyperstreamRemixer::Debug;
 
-using HyperstreamRemixer::Audio::initialize_remixer;
-using HyperstreamRemixer::Audio::clean_up_remixer;
-using HyperstreamRemixer::Audio::Buffering::Audio;
-using HyperstreamRemixer::Exceptions::HyperstreamException;
-using namespace HyperstreamRemixer::Audio::Effects;
-
-int main(int argc, char* argv[]) {
+auto main(int argc, char *argv[]) -> int {
     try {
         initialize_remixer();
-        const std::vector<AudioEffect*> effects = {
-            new Reverb()
-        };
-        const std::unique_ptr<Audio> audio(Audio::from_mp3_file(effects, "assets/Omnia, Ira - The Fusion.mp3"));
-        audio->play();
-
+        $show_visual_debugger();
         clean_up_remixer();
 
         return EXIT_SUCCESS;
-    } catch (const HyperstreamException& exception) {
-        std::cerr << "Hyperstream Remixer crashed:" << std::endl;
-        std::cerr << "See exception to find cause:" << std::endl;
-        std::cerr << exception.what() << std::endl;
-
-        return EXIT_FAILURE;
+    } catch (const HyperstreamException &exception) {
+        std::cerr << "Hyperstream Remixer crashed:" << '\n';
+        std::cerr << "See exception to find cause:" << '\n';
+        std::cerr << exception.what() << '\n';
     }
 }
