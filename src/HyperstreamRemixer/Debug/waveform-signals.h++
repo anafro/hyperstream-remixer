@@ -1,8 +1,8 @@
 #pragma once
-#include "HyperstreamRemixer/Audio/Waveform/waveform-types.h++"
+#include "HyperstreamRemixer/Sound/Waveform/waveform-types.h++"
 
-namespace HyperstreamRemixer::Audio::Debug {
-    using namespace Waveform;
+namespace HyperstreamRemixer::Debug {
+    using namespace Audio::Waveform;
 
     inline wf_amplitude_t add_white_noise_if(const wf_amplitude_t original_amplitude, const bool should_add_signal) {
         if (should_add_signal) {
