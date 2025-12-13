@@ -1,47 +1,47 @@
 #include "eq.h++"
 #include <algorithm>
 #include <cmath>
-#include <vector>
 #include <numbers>
+#include <vector>
 
-#include "HyperstreamRemixer/Audio/Adapters/freeverb-adapters.h++"
 #include "HyperstreamRemixer/Debug/print.h++"
+#include "HyperstreamRemixer/Sound/Adapters/freeverb-adapters.h++"
 
+namespace HyperstreamRemixer::Sound::Effects {
+EQ::EQ(std::array<eq_gain_t, eq_bands> band_gains) {
+    std::transform(band_gains.begin(), band_gains.end(), band_frequencies.begin(), this->bands.begin(), [](const auto gain, const auto frequency) {
+        return EQBand{
+            .frequency = frequency,
+            .gain = gain,
+        };
+    });
+}
 
-namespace HyperstreamRemixer::Audio::Effects {
-    EQ::EQ(std::array<eq_gain_t, eq_bands> band_gains) {
-        std::transform(band_gains.begin(), band_gains.end(), band_frequencies.begin(), this->bands.begin(), [](const auto gain, const auto frequency) {
-            return EQBand {
-                .frequency = frequency,
-                .gain = gain,
-            };
-        });
-    }
+EQ *EQ::from_bands(std::array<std::string, eq_bands + 1 /* <- for scale */> ascii_eq) {
+    const auto &ascii_scale = ascii_eq[0];
+    const size_t max_band_size = calculate_ascii_scale_length(ascii_scale);
+    std::array<eq_gain_t, eq_bands> band_gains;
+    std::transform(ascii_eq.begin() + 1 /* <- for scale */, ascii_eq.end(), band_gains.begin(), [max_band_size](const std::string &band) {
+        return calculate_ascii_band_gain(max_band_size, band);
+    });
 
-    EQ * EQ::from_bands(std::array<std::string, eq_bands + 1 /* <- for scale */> ascii_eq) {
-        const auto& ascii_scale = ascii_eq[0];
-        const size_t max_band_size = calculate_ascii_scale_length(ascii_scale);
-        std::array<eq_gain_t, eq_bands> band_gains;
-        std::transform(ascii_eq.begin() + 1 /* <- for scale */, ascii_eq.end(), band_gains.begin(), [max_band_size](const std::string& band) {
-            return calculate_ascii_band_gain(max_band_size, band);
-        });
-
-        return new EQ(band_gains);
-    }
+    return new EQ(band_gains);
+}
 
 void EQ::apply(Allocation<wf_amplitude_t> &audio_buffer,
                const wf_channels_t channels,
-               const wf_sample_rate_t sample_rate)
-{
+               const wf_sample_rate_t sample_rate) {
     using std::cos;
-    using std::sin;
     using std::pow;
+    using std::sin;
     using std::numbers::pi;
 
-    for (auto & band : bands) {
+    for (auto &band : bands) {
         float f0 = band.frequency;
-        if (f0 <= 0.0f) f0 = 20.0f;
-        if (f0 > sample_rate * 0.5f) f0 = sample_rate * 0.5f - 1.0f;
+        if (f0 <= 0.0f)
+            f0 = 20.0f;
+        if (f0 > sample_rate * 0.5f)
+            f0 = sample_rate * 0.5f - 1.0f;
 
         float A = pow(10.0f, band.gain / 40.0f);
         float Q = 1.5f;
@@ -66,7 +66,6 @@ void EQ::apply(Allocation<wf_amplitude_t> &audio_buffer,
     }
 
     const size_t total_samples = audio_buffer.get_length();
-    if (channels == 0) return;
     const size_t frames = total_samples / channels;
 
     std::vector z1(bands.size(), std::vector(channels, 0.0f));
@@ -74,7 +73,7 @@ void EQ::apply(Allocation<wf_amplitude_t> &audio_buffer,
 
     for (size_t frame = 0; frame < frames; ++frame) {
         for (size_t ch = 0; ch < channels; ++ch) {
-            const size_t idx = frame * channels + ch;
+            const size_t idx = frame + ch;
             float s = Adapters::fv_amplitude(audio_buffer.raw()[idx]);
 
             for (size_t bi = 0; bi < bands.size(); ++bi) {
@@ -95,4 +94,4 @@ void EQ::apply(Allocation<wf_amplitude_t> &audio_buffer,
     }
 }
 
-}
+} // namespace HyperstreamRemixer::Sound::Effects

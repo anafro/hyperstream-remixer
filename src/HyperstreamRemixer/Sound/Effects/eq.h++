@@ -3,16 +3,18 @@
 #include <format>
 
 #include "audio-effect.h++"
-#include "Exceptions/eq-ascii-format-exception.h++"
+#include <HyperstreamRemixer/Sound/Effects/Exceptions/eq-ascii-format-exception.h++>
 #include <HyperstreamRemixer/Sugar/percents.h++>
+#include <HyperstreamRemixer/Debug/visual-audio-debugger-definitions.h++>
 
-#include "HyperstreamRemixer/Debug/visual-audio-debugger.h++"
-
-namespace HyperstreamRemixer::Audio::Effects {
+namespace HyperstreamRemixer::Sound::Effects {
+    using namespace Sugar;
     typedef double eq_frequency_t;
     typedef double eq_gain_t;
     typedef double eq_param_t;
     typedef double eq_state_t;
+    inline constinit eq_gain_t eq_gain_min =   0_percent;
+    inline constinit eq_gain_t eq_gain_max = 200_percent;
     constexpr size_t eq_bands = 16;
     constexpr std::array<eq_frequency_t, eq_bands> band_frequencies = {
         20,   35,   50,    80,
@@ -20,8 +22,12 @@ namespace HyperstreamRemixer::Audio::Effects {
         1000, 1200, 2000,  3500,
         5000, 8000, 14000, 18000,
     };
-
-    using namespace Sugar;
+    inline constinit std::array eq_band_gains_default = {
+        100_percent, 100_percent, 100_percent, 100_percent,
+        100_percent, 100_percent, 100_percent, 100_percent,
+        100_percent, 100_percent, 100_percent, 100_percent,
+        100_percent, 100_percent, 100_percent, 100_percent,
+    };
 
     struct EQBand {
         eq_frequency_t frequency;
@@ -32,11 +38,11 @@ namespace HyperstreamRemixer::Audio::Effects {
 
     class EQ final : public AudioEffect {
     public:
-        explicit EQ(std::array<eq_gain_t, eq_bands> band_gains);
+        explicit EQ(std::array<eq_gain_t, eq_bands> band_gains = eq_band_gains_default);
         static EQ* from_bands(std::array<std::string, eq_bands + 1 /* <- for scale */> ascii_eq);
         void apply(Allocation<wf_amplitude_t> &audio_buffer, wf_channels_t channels, wf_sample_rate_t sample_rate) override;
-    private:
         std::array<EQBand, eq_bands> bands;
+    private:
         REMIXER_VISUAL_DEBUGGER_FRIEND_DEFINITION();
     };
 
