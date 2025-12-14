@@ -87,7 +87,7 @@ inline void $show_visual_debugger() {
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 
-    while (!glfwWindowShouldClose(window)) {
+    while (glfwWindowShouldClose(window) == 0) {
         glfwPollEvents();
 
         ImGui_ImplOpenGL3_NewFrame();
