@@ -60,8 +60,9 @@ static void glfw_error_callback(const int error, const char *description) {
 inline void $show_visual_debugger() {
 #ifdef REMIXER_VISUAL_DEBUGGER_ON
     glfwSetErrorCallback(glfw_error_callback);
-    if (glfwInit() == 0)
+    if (glfwInit() == 0) {
         exit(EXIT_FAILURE);
+    }
 
     const auto glsl_version = "#version 330";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
