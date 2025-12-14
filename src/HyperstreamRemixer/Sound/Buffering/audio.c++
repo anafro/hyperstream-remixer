@@ -90,7 +90,7 @@ void Audio::play() {
 }
 
 [[nodiscard]]
-Audio *Audio::from_mp3_file(std::initializer_list<AudioEffect *> &&effects, const std::string &file_path, const audio_fx_behavior_t fx_behavior) {
+auto Audio::from_mp3_file(std::initializer_list<AudioEffect *> &&effects, const std::string &file_path, const audio_fx_behavior_t fx_behavior) -> Audio * {
     if (not std::filesystem::exists(file_path)) {
         throw AudioFileNotFoundException(file_path);
     }
@@ -113,7 +113,7 @@ Audio *Audio::from_mp3_file(std::initializer_list<AudioEffect *> &&effects, cons
         fx_behavior);
 }
 
-Allocation<wf_amplitude_t> Audio::apply_effects(const Allocation<wf_amplitude_t> &buffer) const {
+auto Audio::apply_effects(const Allocation<wf_amplitude_t> &buffer) const -> Allocation<wf_amplitude_t> {
     auto buffer_copy = buffer.create_copy();
 
     for (const auto effect : effects) {
@@ -123,7 +123,7 @@ Allocation<wf_amplitude_t> Audio::apply_effects(const Allocation<wf_amplitude_t>
     return buffer_copy;
 }
 
-wf_samples_t Audio::get_samples() const {
+auto Audio::get_samples() const -> wf_samples_t {
     return this->buffer_with_effects.get_length<>();
 }
 } // namespace HyperstreamRemixer::Sound::Buffering

@@ -5,7 +5,7 @@ namespace HyperstreamRemixer::Math {
 using namespace Concepts;
 
 template <numeric T>
-T clip(T min, T value, T max) {
+auto clip(T min, T value, T max) -> T {
     if (value < min) {
         return min;
     }

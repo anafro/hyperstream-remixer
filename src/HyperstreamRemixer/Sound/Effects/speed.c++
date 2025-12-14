@@ -31,19 +31,19 @@ void Speed::apply(Allocation<wf_amplitude_t> &audio_buffer, const wf_channels_t 
     audio_buffer.replace(new_audio_buffer, new_audio_length, CLEANUP_WITH_DELETE_1D_ARRAY);
 }
 
-fx_speed_t Speed::clip_speed(const fx_speed_t overflown_speed) {
+auto Speed::clip_speed(const fx_speed_t overflown_speed) -> fx_speed_t {
     return clip(fx_speed_min, overflown_speed, 16.000);
 }
 
-wf_samples_t Speed::calculate_resampled_audio_length(const wf_samples_t audio_length, const fx_speed_t speed) {
+auto Speed::calculate_resampled_audio_length(const wf_samples_t audio_length, const fx_speed_t speed) -> wf_samples_t {
     return std::ceil<wf_samples_t>(audio_length * speed);
 }
 
-fx_speed_t Speed::calculate_resampled_sample_index(const wf_samples_t audio_length, const fx_speed_t speed) {
+auto Speed::calculate_resampled_sample_index(const wf_samples_t audio_length, const fx_speed_t speed) -> fx_speed_t {
     return audio_length * speed;
 }
 
-fx_speed_fraction_t Speed::calculate_resampled_fraction(fx_speed_sample_t speed_sample_index, wf_samples_t index) {
+auto Speed::calculate_resampled_fraction(fx_speed_sample_t speed_sample_index, wf_samples_t index) -> fx_speed_fraction_t {
     return speed_sample_index - index;
 }
 } // namespace HyperstreamRemixer::Sound::Effects

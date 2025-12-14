@@ -2,6 +2,6 @@
 #include <cstdlib>
 
 [[nodiscard]]
-inline double random_factor() {
+inline auto random_factor() -> double {
     return (static_cast<double>(rand()) / (RAND_MAX)) + 1;
 }

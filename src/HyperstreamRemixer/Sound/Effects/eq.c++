@@ -17,7 +17,7 @@ EQ::EQ(std::array<eq_gain_t, eq_bands> band_gains) {
     });
 }
 
-EQ *EQ::from_bands(std::array<std::string, eq_bands + 1 /* <- for scale */> ascii_eq) {
+auto EQ::from_bands(std::array<std::string, eq_bands + 1 /* <- for scale */> ascii_eq) -> EQ * {
     const auto &ascii_scale = ascii_eq[0];
     const std::size_t max_band_size = calculate_ascii_scale_length(ascii_scale);
     std::array<eq_gain_t, eq_bands> band_gains;

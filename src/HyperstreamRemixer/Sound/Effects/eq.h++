@@ -63,7 +63,7 @@ struct EQBand {
 class EQ final : public AudioEffect {
   public:
     explicit EQ(std::array<eq_gain_t, eq_bands> band_gains = eq_band_gains_default);
-    static EQ *from_bands(std::array<std::string, eq_bands + 1 /* <- for scale */> ascii_eq);
+    static auto from_bands(std::array<std::string, eq_bands + 1 /* <- for scale */> ascii_eq) -> EQ *;
     void apply(Allocation<wf_amplitude_t> &audio_buffer, wf_channels_t channels, wf_sample_rate_t sample_rate) override;
     std::array<EQBand, eq_bands> bands;
 
@@ -72,12 +72,12 @@ class EQ final : public AudioEffect {
 };
 
 [[nodiscard]]
-static constexpr std::size_t calculate_ascii_scale_length(const std::string &scale) {
+static constexpr auto calculate_ascii_scale_length(const std::string &scale) -> std::size_t {
     return scale.length();
 }
 
 [[nodiscard]]
-static constexpr eq_gain_t calculate_ascii_band_gain(const std::size_t band_max_length, const std::string &band) {
+static constexpr auto calculate_ascii_band_gain(const std::size_t band_max_length, const std::string &band) -> eq_gain_t {
     if (band.length() > band_max_length) {
         throw Exceptions::EQAsciiFormatException(std::format("An EQ ASCII band with the length of {} exceed your scale with the length of {}", band.length(), band_max_length));
     }

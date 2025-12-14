@@ -9,7 +9,7 @@ class HyperstreamException : public std::exception {
     explicit HyperstreamException(const char *message);
     ~HyperstreamException() noexcept override;
 
-    const char *what() const noexcept override;
+    auto what() const noexcept -> const char * override;
 
   protected:
     std::string message;

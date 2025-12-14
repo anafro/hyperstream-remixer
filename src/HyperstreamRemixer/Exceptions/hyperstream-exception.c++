@@ -13,7 +13,7 @@ HyperstreamException::~HyperstreamException() noexcept {
     // nothing to destroy //
 }
 
-const char *HyperstreamException::what() const noexcept {
+auto HyperstreamException::what() const noexcept -> const char * {
     return this->message.c_str();
 }
 } // namespace HyperstreamRemixer::Exceptions

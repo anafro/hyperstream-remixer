@@ -31,21 +31,21 @@ class Allocation final {
     ~Allocation();
     void replace(T *new_ptr, std::size_t new_size,
                  allocation_cleanup_strategy_t new_cleanup_strategy);
-    [[nodiscard]] allocation_cleanup_strategy_t get_cleanup_strategy() const;
-    Allocation &operator=(const Allocation &) = delete;
-    Allocation &operator=(Allocation &&that);
-    T *raw();
-    const T *raw() const;
-    T *operator->();
-    const T *operator->() const;
-    T *operator*();
-    const T *operator*() const;
-    Allocation create_view();
-    Allocation create_copy() const;
-    [[nodiscard]] std::size_t get_size() const;
+    [[nodiscard]] auto get_cleanup_strategy() const -> allocation_cleanup_strategy_t;
+    auto operator=(const Allocation &) -> Allocation & = delete;
+    auto operator=(Allocation &&that) -> Allocation &;
+    auto raw() -> T *;
+    auto raw() const -> const T *;
+    auto operator->() -> T *;
+    auto operator->() const -> const T *;
+    auto operator*() -> T *;
+    auto operator*() const -> const T *;
+    auto create_view() -> Allocation;
+    auto create_copy() const -> Allocation;
+    [[nodiscard]] auto get_size() const -> std::size_t;
     template <typename S = std::size_t>
-    [[nodiscard]] S get_length() const;
-    static Allocation null();
+    [[nodiscard]] auto get_length() const -> S;
+    static auto null() -> Allocation;
 
   private:
     T *ptr;
@@ -80,12 +80,12 @@ void Allocation<T>::replace(
 }
 
 template <typename T>
-allocation_cleanup_strategy_t Allocation<T>::get_cleanup_strategy() const {
+auto Allocation<T>::get_cleanup_strategy() const -> allocation_cleanup_strategy_t {
     return this->cleanup_strategy;
 }
 
 template <typename T>
-Allocation<T> &Allocation<T>::operator=(Allocation<T> &&that) {
+auto Allocation<T>::operator=(Allocation<T> &&that) -> Allocation<T> & {
     this->cleanup();
     this->ptr = that.ptr;
     this->size = that.size;
@@ -97,34 +97,34 @@ Allocation<T> &Allocation<T>::operator=(Allocation<T> &&that) {
 }
 
 template <typename T>
-T *Allocation<T>::raw() { return this->ptr; }
+auto Allocation<T>::raw() -> T * { return this->ptr; }
 
 template <typename T>
-const T *Allocation<T>::raw() const { return this->ptr; }
+auto Allocation<T>::raw() const -> const T * { return this->ptr; }
 
 template <typename T>
-T *Allocation<T>::operator->() { return raw(); }
+auto Allocation<T>::operator->() -> T * { return raw(); }
 
 template <typename T>
-const T *Allocation<T>::operator->() const {
+auto Allocation<T>::operator->() const -> const T * {
     return raw();
 }
 
 template <typename T>
-T *Allocation<T>::operator*() { return raw(); }
+auto Allocation<T>::operator*() -> T * { return raw(); }
 
 template <typename T>
-const T *Allocation<T>::operator*() const {
+auto Allocation<T>::operator*() const -> const T * {
     return raw();
 }
 
 template <typename T>
-Allocation<T> Allocation<T>::create_view() {
+auto Allocation<T>::create_view() -> Allocation<T> {
     return Allocation(this->ptr, this->size, DONT_CLEANUP);
 }
 
 template <typename T>
-Allocation<T> Allocation<T>::create_copy() const {
+auto Allocation<T>::create_copy() const -> Allocation<T> {
     T *copied_ptr = nullptr;
 
     static_assert(std::is_copy_constructible_v<T>,
@@ -176,18 +176,18 @@ Allocation<T> Allocation<T>::create_copy() const {
 }
 
 template <typename T>
-std::size_t Allocation<T>::get_size() const {
+auto Allocation<T>::get_size() const -> std::size_t {
     return this->size;
 }
 
 template <typename T>
 template <typename S>
-S Allocation<T>::get_length() const {
+auto Allocation<T>::get_length() const -> S {
     return S(this->size / sizeof(T));
 }
 
 template <typename T>
-Allocation<T> Allocation<T>::null() {
+auto Allocation<T>::null() -> Allocation<T> {
     return Allocation(nullptr, sizeof(std::nullptr_t), DONT_CLEANUP);
 }
 
@@ -221,27 +221,27 @@ void Allocation<T>::cleanup() {
 }
 
 template <typename T>
-__REMIXER_COERCE_INLINE Allocation<T>
+__REMIXER_COERCE_INLINE auto
 object(T *ptr,
-       allocation_cleanup_strategy_t cleanup_strategy = CLEANUP_WITH_DELETE) {
+       allocation_cleanup_strategy_t cleanup_strategy = CLEANUP_WITH_DELETE) -> Allocation<T> {
     return Allocation<T>(ptr, sizeof(T), cleanup_strategy);
 }
 
 template <typename T, typename... TConstructorArgs>
-__REMIXER_COERCE_INLINE Allocation<T> create(TConstructorArgs &&...args) {
+__REMIXER_COERCE_INLINE auto create(TConstructorArgs &&...args) -> Allocation<T> {
     return Allocation<T>(new T(std::forward<TConstructorArgs>(args)...),
                          sizeof(T), CLEANUP_WITH_DELETE);
 }
 
 template <typename T, typename TBuilder, typename... TBuilderArgs>
-__REMIXER_COERCE_INLINE Allocation<T> build(TBuilder &&builder,
-                                            TBuilderArgs &&...args) {
+__REMIXER_COERCE_INLINE auto build(TBuilder &&builder,
+                                   TBuilderArgs &&...args) -> Allocation<T> {
     return Allocation<T>(builder(std::forward<TBuilderArgs>(args)...),
                          sizeof(T), CLEANUP_WITH_DELETE);
 }
 
 template <typename T>
-__REMIXER_COERCE_INLINE Allocation<T> array_of(const std::size_t elements) {
+__REMIXER_COERCE_INLINE auto array_of(const std::size_t elements) -> Allocation<T> {
     return Allocation<T>(new T[elements], elements * sizeof(T),
                          CLEANUP_WITH_DELETE_1D_ARRAY);
 }

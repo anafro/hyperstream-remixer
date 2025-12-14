@@ -31,7 +31,7 @@ REMIXER_VISUAL_DEBUGGER_FUNCTION_DEFINITION() {
     if (!playing) {
         playing = true;
 
-        std::thread([]() {
+        std::thread([]() -> void {
             while (playing) {
                 audio->play();
             }
