@@ -19,7 +19,7 @@ Reverb::Reverb(const fx_reverb_t reverb) : reverb(reverb) {
 
 void Reverb::apply(Allocation<wf_amplitude_t> &audio_buffer, const wf_channels_t channels, const wf_sample_rate_t sample_rate) {
     const auto audio_length = audio_buffer.get_length<wf_samples_t>();
-    std::vector<fv_amplitude_t> fv_in_left($(audio_length));
+    std::vector<fv_amplitude_t> fv_in_left(audio_length);
     std::vector<fv_amplitude_t> fv_in_right(audio_length);
     std::vector<fv_amplitude_t> fv_out_left(audio_length);
     std::vector<fv_amplitude_t> fv_out_right(audio_length);
