@@ -3,7 +3,6 @@
 #include <format>
 
 #include "audio-effect.h++"
-#include <HyperstreamRemixer/Debug/visual-audio-debugger-definitions.h++>
 #include <HyperstreamRemixer/Sound/Effects/Exceptions/eq-ascii-format-exception.h++>
 #include <HyperstreamRemixer/Sugar/percents.h++>
 
@@ -66,9 +65,6 @@ class EQ final : public AudioEffect {
     static auto from_bands(std::array<std::string, eq_bands + 1 /* <- for scale */> ascii_eq) -> EQ *;
     void apply(Allocation<wf_amplitude_t> &audio_buffer, wf_channels_t channels, wf_sample_rate_t sample_rate) override;
     std::array<EQBand, eq_bands> bands;
-
-  private:
-    REMIXER_VISUAL_DEBUGGER_FRIEND_DEFINITION();
 };
 
 [[nodiscard]]

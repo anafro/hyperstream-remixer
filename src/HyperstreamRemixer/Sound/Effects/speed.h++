@@ -1,6 +1,5 @@
 #pragma once
 #include "audio-effect.h++"
-#include <HyperstreamRemixer/Debug/visual-audio-debugger-definitions.h++>
 #include <HyperstreamRemixer/Math/clipping.h++>
 #include <HyperstreamRemixer/Sugar/percents.h++>
 
@@ -25,6 +24,5 @@ class Speed final : public AudioEffect {
     static auto calculate_resampled_audio_length(wf_samples_t audio_length, fx_speed_t speed) -> wf_samples_t;
     static auto calculate_resampled_sample_index(wf_samples_t index, fx_speed_t speed) -> fx_speed_sample_t;
     static auto calculate_resampled_fraction(fx_speed_sample_t speed_sample_index, wf_samples_t index) -> fx_speed_fraction_t;
-    REMIXER_VISUAL_DEBUGGER_FRIEND_DEFINITION();
 };
 } // namespace HyperstreamRemixer::Sound::Effects

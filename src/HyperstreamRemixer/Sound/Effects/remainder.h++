@@ -20,7 +20,6 @@ class Remainder final : public AudioEffect {
   private:
     std::chrono::duration<double> remainder_duration;
     [[nodiscard]] auto calculate_remainder_length(wf_channels_t channels, wf_sample_rate_t sample_rate) const -> wf_samples_t;
-    REMIXER_VISUAL_DEBUGGER_FRIEND_DEFINITION();
 };
 
 inline void Remainder::apply(Allocation<wf_amplitude_t> &audio_buffer, const wf_channels_t channels, const wf_sample_rate_t sample_rate) {
