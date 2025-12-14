@@ -69,8 +69,9 @@ inline void $show_visual_debugger() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     GLFWwindow *window = glfwCreateWindow(1280, 720, "ImGui Demo", nullptr, nullptr);
-    if (window == nullptr)
+    if (window == nullptr) {
         exit(EXIT_FAILURE);
+    }
 
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
