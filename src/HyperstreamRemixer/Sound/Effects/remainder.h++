@@ -4,13 +4,15 @@
 #include <chrono>
 #include <cstring>
 
-#include "HyperstreamRemixer/Debug/visual-audio-debugger.h++"
-
 namespace HyperstreamRemixer::Sound::Effects {
+using namespace std::chrono_literals;
+
+inline constinit std::chrono::seconds fx_remainder_default = 4s;
+
 class Remainder final : public AudioEffect {
   public:
     template <class Rep, class Period>
-    explicit Remainder(std::chrono::duration<Rep, Period> remainder_duration)
+    explicit Remainder(std::chrono::duration<Rep, Period> remainder_duration = fx_remainder_default)
         : remainder_duration(std::chrono::duration<double>(remainder_duration)) {}
 
     void apply(Allocation<wf_amplitude_t> &audio_buffer, wf_channels_t channels, wf_sample_rate_t sample_rate) override;

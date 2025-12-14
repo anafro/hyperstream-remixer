@@ -22,7 +22,7 @@ using namespace std::chrono_literals;
 
 REMIXER_VISUAL_DEBUGGER_FUNCTION_DEFINITION() {
     static bool playing = false;
-    static auto remainder = create<Remainder>(4.0s);
+    static auto remainder = create<Remainder>();
     static auto reverb = create<Reverb>(1.);
     static auto speed = create<Speed>();
     static auto eq = create<EQ>();
