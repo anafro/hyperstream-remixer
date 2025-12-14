@@ -64,14 +64,14 @@ void Audio::play() {
         return;
     }
 
-    const size_t total_bytes = get_samples() * sizeof(wf_amplitude_t);
-    const size_t chunk_bytes = spec.samples * channels * sizeof(wf_amplitude_t);
+    const std::size_t total_bytes = get_samples() * sizeof(wf_amplitude_t);
+    const std::size_t chunk_bytes = spec.samples * channels * sizeof(wf_amplitude_t);
 
-    size_t offset = 0;
+    std::size_t offset = 0;
     SDL_PauseAudioDevice(dev, 0);
 
     while (offset < total_bytes) {
-        const size_t bytes_to_queue = std::min(chunk_bytes, total_bytes - offset);
+        const std::size_t bytes_to_queue = std::min(chunk_bytes, total_bytes - offset);
 
         SDL_QueueAudio(dev, this->buffer_with_effects.raw() + offset / sizeof(wf_amplitude_t), bytes_to_queue);
 

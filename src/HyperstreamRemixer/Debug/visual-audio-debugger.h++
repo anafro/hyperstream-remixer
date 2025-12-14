@@ -23,7 +23,7 @@ using namespace std::chrono_literals;
 REMIXER_VISUAL_DEBUGGER_FUNCTION_DEFINITION() {
     static bool playing = false;
     static auto remainder = create<Remainder>(4.0s);
-    static auto reverb = create<Reverb>(1.0);
+    static auto reverb = create<Reverb>(1.);
     static auto speed = create<Speed>();
     static auto eq = create<EQ>();
     static auto audio = object(Audio::from_mp3_file({*remainder, *reverb, *speed, *eq}, "music/Bruh.mp3", APPLY_FX_ON_PLAY));
@@ -42,7 +42,7 @@ REMIXER_VISUAL_DEBUGGER_FUNCTION_DEFINITION() {
     ImGui::DragScalar("Reverb", ImGuiDataType_Double, &reverb->reverb, .05, &fx_reverb_min, &fx_reverb_max, "%.2f");
     ImGui::DragScalar("Speed", ImGuiDataType_Double, &speed->speed, .05, &fx_speed_min, &fx_speed_max, "%.2f");
     ImGui::SeparatorText("Multiband EQ");
-    for (size_t i = 0; i < eq_bands; i++) {
+    for (std::size_t i = 0; i < eq_bands; i++) {
         if (i != 0) {
             ImGui::SameLine();
         }

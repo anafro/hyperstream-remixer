@@ -26,10 +26,10 @@ class Allocation final {
     Allocation() = delete;
     Allocation(const Allocation &) = delete;
     Allocation(Allocation &&) noexcept;
-    Allocation(T *ptr, size_t size,
+    Allocation(T *ptr, std::size_t size,
                allocation_cleanup_strategy_t cleanup_strategy);
     ~Allocation();
-    void replace(T *new_ptr, size_t new_size,
+    void replace(T *new_ptr, std::size_t new_size,
                  allocation_cleanup_strategy_t new_cleanup_strategy);
     [[nodiscard]] allocation_cleanup_strategy_t get_cleanup_strategy() const;
     Allocation &operator=(const Allocation &) = delete;
@@ -42,20 +42,20 @@ class Allocation final {
     const T *operator*() const;
     Allocation create_view();
     Allocation create_copy() const;
-    [[nodiscard]] size_t get_size() const;
-    template <typename S = size_t>
+    [[nodiscard]] std::size_t get_size() const;
+    template <typename S = std::size_t>
     [[nodiscard]] S get_length() const;
     static Allocation null();
 
   private:
     T *ptr;
-    size_t size;
+    std::size_t size;
     allocation_cleanup_strategy_t cleanup_strategy;
     void cleanup();
 };
 
 template <typename T>
-Allocation<T>::Allocation(T *ptr, const size_t size,
+Allocation<T>::Allocation(T *ptr, const std::size_t size,
                           const allocation_cleanup_strategy_t cleanup_strategy)
     : ptr(ptr), size(size), cleanup_strategy(cleanup_strategy) {}
 
@@ -71,7 +71,7 @@ Allocation<T>::Allocation(Allocation &&that) noexcept
 
 template <typename T>
 void Allocation<T>::replace(
-    T *new_ptr, const size_t new_size,
+    T *new_ptr, const std::size_t new_size,
     allocation_cleanup_strategy_t new_cleanup_strategy) {
     cleanup();
     this->ptr = new_ptr;
@@ -176,7 +176,7 @@ Allocation<T> Allocation<T>::create_copy() const {
 }
 
 template <typename T>
-size_t Allocation<T>::get_size() const {
+std::size_t Allocation<T>::get_size() const {
     return this->size;
 }
 
@@ -241,7 +241,7 @@ __REMIXER_COERCE_INLINE Allocation<T> build(TBuilder &&builder,
 }
 
 template <typename T>
-__REMIXER_COERCE_INLINE Allocation<T> array_of(const size_t elements) {
+__REMIXER_COERCE_INLINE Allocation<T> array_of(const std::size_t elements) {
     return Allocation<T>(new T[elements], elements * sizeof(T),
                          CLEANUP_WITH_DELETE_1D_ARRAY);
 }

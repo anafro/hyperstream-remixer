@@ -19,7 +19,7 @@ EQ::EQ(std::array<eq_gain_t, eq_bands> band_gains) {
 
 EQ *EQ::from_bands(std::array<std::string, eq_bands + 1 /* <- for scale */> ascii_eq) {
     const auto &ascii_scale = ascii_eq[0];
-    const size_t max_band_size = calculate_ascii_scale_length(ascii_scale);
+    const std::size_t max_band_size = calculate_ascii_scale_length(ascii_scale);
     std::array<eq_gain_t, eq_bands> band_gains;
     std::transform(ascii_eq.begin() + 1 /* <- for scale */, ascii_eq.end(), band_gains.begin(), [max_band_size](const std::string &band) {
         return calculate_ascii_band_gain(max_band_size, band);
@@ -65,18 +65,18 @@ void EQ::apply(Allocation<wf_amplitude_t> &audio_buffer,
         band.b2 = a2 / a0;
     }
 
-    const size_t total_samples = audio_buffer.get_length();
-    const size_t frames = total_samples / channels;
+    const std::size_t total_samples = audio_buffer.get_length();
+    const std::size_t frames = total_samples / channels;
 
     std::vector z1(bands.size(), std::vector(channels, 0.0f));
     std::vector z2(bands.size(), std::vector(channels, 0.0f));
 
-    for (size_t frame = 0; frame < frames; ++frame) {
-        for (size_t ch = 0; ch < channels; ++ch) {
-            const size_t idx = frame + ch;
+    for (std::size_t frame = 0; frame < frames; ++frame) {
+        for (std::size_t ch = 0; ch < channels; ++ch) {
+            const std::size_t idx = frame + ch;
             float s = Adapters::fv_amplitude(audio_buffer.raw()[idx]);
 
-            for (size_t bi = 0; bi < bands.size(); ++bi) {
+            for (std::size_t bi = 0; bi < bands.size(); ++bi) {
                 auto &band = bands[bi];
 
                 float out = band.a0 * s + z1[bi][ch];
