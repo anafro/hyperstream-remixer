@@ -10,11 +10,11 @@ using namespace Adapters;
 
 Reverb::Reverb(const fx_reverb_t reverb) : reverb(reverb) {
     freeverb.setwet(static_cast<float>(reverb));
-    freeverb.setdry(0.400F);
-    freeverb.setroomsize(0.660F);
-    freeverb.setwidth(0.200F);
-    freeverb.setdamp(0.400F);
-    freeverb.setmode(0.000F);
+    freeverb.setdry(fx_reverb_dry_default);
+    freeverb.setroomsize(fx_reverb_roomsize_default);
+    freeverb.setwidth(fx_reverb_width_default);
+    freeverb.setdamp(fx_reverb_damp_default);
+    freeverb.setmode(fx_reverb_mode_default);
 }
 
 void Reverb::apply(Allocation<wf_amplitude_t> &audio_buffer, const wf_channels_t channels, const wf_sample_rate_t sample_rate) {
