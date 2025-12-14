@@ -23,7 +23,7 @@ using namespace std::chrono_literals;
 REMIXER_VISUAL_DEBUGGER_FUNCTION_DEFINITION() {
     static bool playing = false;
     static auto remainder = create<Remainder>();
-    static auto reverb = create<Reverb>(1.);
+    static auto reverb = create<Reverb>();
     static auto speed = create<Speed>();
     static auto eq = create<EQ>();
     static auto audio = object(Audio::from_mp3_file({*remainder, *reverb, *speed, *eq}, "music/Bruh.mp3", APPLY_FX_ON_PLAY));
