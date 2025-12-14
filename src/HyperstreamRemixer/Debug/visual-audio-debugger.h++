@@ -1,5 +1,5 @@
 #pragma once
-#include "visual-audio-debugger-definitions.h++"
+#include "HyperstreamRemixer/Macros/coerce-inline.h++"
 #include <HyperstreamRemixer/Environment/configuration.h++>
 #include <HyperstreamRemixer/Sound/Buffering/audio.h++>
 #include <HyperstreamRemixer/Sound/Effects/eq.h++>
@@ -12,6 +12,7 @@
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
 #include <imgui.h>
+#include <print>
 #include <thread>
 #endif
 
@@ -19,42 +20,56 @@ namespace HyperstreamRemixer::Debug {
 using namespace Memory;
 using namespace Sound::Buffering;
 using namespace std::chrono_literals;
+inline constexpr const char *sound_file_path = "music/Bruh.mp3";
+inline constexpr const char *window_title = "Effects";
+inline constexpr const char *debugger_title = "Hyperstream Remixer - Visual Debugger";
+inline constexpr const char *slider_value_format = "%.2f";
+inline constexpr double slider_step = 0.050;
+inline constexpr std::size_t eq_band_width = 18;
+inline constexpr std::size_t eq_band_height = 160;
+inline constexpr std::size_t window_width = 1080;
+inline constexpr std::size_t window_height = 720;
+inline constexpr double window_fill_r = 0.100;
+inline constexpr double window_fill_g = 0.100;
+inline constexpr double window_fill_b = 0.100;
+inline constexpr double window_fill_a = 1.000;
 
-REMIXER_VISUAL_DEBUGGER_FUNCTION_DEFINITION() {
-    static bool playing = false;
+__REMIXER_COERCE_INLINE void render_visual_audio_debugger(GLFWwindow *window) {
     static auto remainder = create<Remainder>();
     static auto reverb = create<Reverb>();
     static auto speed = create<Speed>();
-    static auto eq = create<EQ>();
-    static auto audio = object(Audio::from_mp3_file({*remainder, *reverb, *speed, *eq}, "music/Bruh.mp3", APPLY_FX_ON_PLAY));
+    static auto equalizer = create<EQ>();
+    static auto audio = object(Audio::from_mp3_file({*remainder, *reverb, *speed, *equalizer}, sound_file_path, APPLY_FX_ON_PLAY));
+    static bool is_first_frame = false;
+    const bool debugger_opened = glfwWindowShouldClose(window) != 0;
 
-    if (!playing) {
-        playing = true;
+    if (is_first_frame) {
+        is_first_frame = false;
 
-        std::thread([]() -> void {
-            while (playing) {
+        std::thread([&debugger_opened]() -> void {
+            while (debugger_opened) {
                 audio->play();
             }
         }).detach();
     }
 
-    ImGui::Begin("Hyperstream Remixer - Visual Debugger");
-    ImGui::DragScalar("Reverb", ImGuiDataType_Double, &reverb->reverb, .05, &fx_reverb_min, &fx_reverb_max, "%.2f");
-    ImGui::DragScalar("Speed", ImGuiDataType_Double, &speed->speed, .05, &fx_speed_min, &fx_speed_max, "%.2f");
+    ImGui::Begin(debugger_title);
+    ImGui::DragScalar("Reverb", ImGuiDataType_Double, &reverb->reverb, slider_step, &fx_reverb_min, &fx_reverb_max, slider_value_format);
+    ImGui::DragScalar("Speed", ImGuiDataType_Double, &speed->speed, slider_step, &fx_speed_min, &fx_speed_max, slider_value_format);
     ImGui::SeparatorText("Multiband EQ");
     for (std::size_t i = 0; i < eq_bands; i++) {
         if (i != 0) {
             ImGui::SameLine();
         }
 
-        ImGui::VSliderScalar(std::to_string(i).c_str(), ImVec2(18, 160), ImGuiDataType_Double, &eq->bands[i], &eq_gain_min, &eq_gain_max, "");
+        ImGui::VSliderScalar(std::to_string(i).c_str(), ImVec2(eq_band_width, eq_band_height), ImGuiDataType_Double, &equalizer->bands[i], &eq_gain_min, &eq_gain_max, "");
     }
 
     ImGui::End();
 }
 
 static void glfw_error_callback(const int error, const char *description) {
-    fprintf(stderr, "GLFW Error %d: %s\n", error, description);
+    std::println(stderr, "GLFW Error {}: {}", error, description);
 }
 
 inline void $show_visual_debugger() {
@@ -64,12 +79,12 @@ inline void $show_visual_debugger() {
         exit(EXIT_FAILURE);
     }
 
-    const auto glsl_version = "#version 330";
+    const auto *glsl_version = "#version 330";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow *window = glfwCreateWindow(1280, 720, "ImGui Demo", nullptr, nullptr);
+    GLFWwindow *window = glfwCreateWindow(window_width, window_height, window_title, nullptr, nullptr);
     if (window == nullptr) {
         exit(EXIT_FAILURE);
     }
@@ -79,8 +94,7 @@ inline void $show_visual_debugger() {
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO &io = ImGui::GetIO();
-    (void)io;
+    [[maybe_unused]] auto &imgui_io = ImGui::GetIO();
 
     ImGui::StyleColorsDark();
 
@@ -94,14 +108,14 @@ inline void $show_visual_debugger() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        $describe_visual_debugger_imgui_frame();
+        render_visual_audio_debugger(window);
 
         ImGui::Render();
         int display_w;
         int display_h;
         glfwGetFramebufferSize(window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClearColor(window_fill_r, window_fill_g, window_fill_b, window_fill_a);
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
