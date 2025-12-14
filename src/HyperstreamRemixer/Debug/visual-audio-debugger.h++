@@ -97,7 +97,8 @@ inline void $show_visual_debugger() {
         $describe_visual_debugger_imgui_frame();
 
         ImGui::Render();
-        int display_w, display_h;
+        int display_w;
+        int display_h;
         glfwGetFramebufferSize(window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
