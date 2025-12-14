@@ -2,6 +2,7 @@
 #include "audio-effect.h++"
 #include <HyperstreamRemixer/Debug/print.h++>
 #include <chrono>
+#include <cmath>
 #include <cstring>
 
 namespace HyperstreamRemixer::Sound::Effects {
