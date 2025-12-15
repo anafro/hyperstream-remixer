@@ -107,7 +107,7 @@ auto Audio::from_mp3_file(std::initializer_list<AudioEffect *> &&effects, const 
     return new Audio(
         effects,
         AUDIO_S16,
-        Allocation(mp3dec_file_info.buffer, $(mp3dec_file_info.samples * mp3dec_file_info.channels), CLEANUP_WITH_FREE),
+        Allocation(mp3dec_file_info.buffer, mp3dec_file_info.samples * mp3dec_file_info.channels, CLEANUP_WITH_FREE),
         mp3dec_file_info.hz,
         mp3dec_file_info.channels,
         fx_behavior);
