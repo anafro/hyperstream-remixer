@@ -20,7 +20,7 @@ namespace HyperstreamRemixer::Debug {
 using namespace Memory;
 using namespace Sound::Buffering;
 using namespace std::chrono_literals;
-inline constexpr const char *sound_file_path = "music/Bruh.mp3";
+inline constexpr const char *sound_file_path = "./music/Notification.mp3";
 inline constexpr const char *window_title = "Effects";
 inline constexpr const char *debugger_title = "Hyperstream Remixer - Visual Debugger";
 inline constexpr const char *slider_value_format = "%.2f";
