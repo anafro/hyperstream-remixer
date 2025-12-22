@@ -6,6 +6,7 @@
 #include <HyperstreamRemixer/Sound/Effects/remainder.h++>
 #include <HyperstreamRemixer/Sound/Effects/reverb.h++>
 #include <HyperstreamRemixer/Sound/Effects/speed.h++>
+#include <cstdlib>
 
 #ifdef REMIXER_VISUAL_DEBUGGER_ON
 #include <GLFW/glfw3.h>
