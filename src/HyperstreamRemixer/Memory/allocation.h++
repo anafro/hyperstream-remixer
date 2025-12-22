@@ -197,8 +197,6 @@ void Allocation<T>::cleanup() {
         return;
     }
 
-    $(typeid(T).name());
-
     switch (cleanup_strategy) {
     case DONT_CLEANUP:
         /* do nothing */
