@@ -35,13 +35,12 @@ inline constexpr double window_fill_b = 0.100;
 inline constexpr double window_fill_a = 1.000;
 
 __REMIXER_COERCE_INLINE void render_visual_audio_debugger(GLFWwindow *window) {
-    static auto remainder = create<Remainder>();
-    static auto reverb = create<Reverb>();
-    static auto speed = create<Speed>();
-    static auto equalizer = create<EQ>();
-    static auto audio = object(Audio::from_mp3_file({*remainder, *reverb, *speed, *equalizer}, sound_file_path, APPLY_FX_ON_PLAY));
-    static bool is_first_frame = false;
-    const bool debugger_opened = glfwWindowShouldClose(window) != 0;
+    static auto *remainder = new Remainder();
+    static auto *reverb = new Reverb();
+    static auto *speed = new Speed();
+    static auto *equalizer = new EQ();
+    static auto audio = object(Audio::from_mp3_file({remainder, reverb, speed, equalizer}, sound_file_path, APPLY_FX_ON_PLAY));
+    static bool is_first_frame = true;
 
     if (is_first_frame) {
         is_first_frame = false;
