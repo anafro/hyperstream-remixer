@@ -64,6 +64,10 @@ __REMIXER_COERCE_INLINE void render_visual_audio_debugger(GLFWwindow *window) {
         ImGui::VSliderScalar(std::to_string(i).c_str(), ImVec2(eq_band_width, eq_band_height), ImGuiDataType_Double, &equalizer->bands[i], &eq_gain_min, &eq_gain_max, "");
     }
 
+    if (ImGui::Button("Quit")) {
+        glfwSetWindowShouldClose(window, GLFW_TRUE);
+    }
+
     ImGui::End();
 }
 
