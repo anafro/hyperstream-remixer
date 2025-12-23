@@ -1,4 +1,5 @@
 #pragma once
+#include "HyperstreamRemixer/Sound/Waveform/waveform-types.h++"
 #include "audio-effect.h++"
 #include <HyperstreamRemixer/Debug/print.h++>
 #include <chrono>
@@ -30,7 +31,7 @@ inline void Remainder::apply(Allocation<wf_amplitude_t> &audio_buffer, const wf_
 
     std::memcpy(new_audio_buffer, audio_buffer.raw(), old_audio_length * sizeof(wf_amplitude_t));
 
-    audio_buffer.replace(new_audio_buffer, new_audio_length, CLEANUP_WITH_DELETE_1D_ARRAY);
+    audio_buffer.replace(new_audio_buffer, new_audio_length * sizeof(wf_amplitude_t), CLEANUP_WITH_DELETE_1D_ARRAY);
 }
 
 inline auto Remainder::calculate_remainder_length(const wf_channels_t channels, const wf_sample_rate_t sample_rate) const -> wf_samples_t {

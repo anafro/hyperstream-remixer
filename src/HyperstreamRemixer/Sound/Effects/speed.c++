@@ -28,7 +28,7 @@ void Speed::apply(Allocation<wf_amplitude_t> &audio_buffer, const wf_channels_t 
         new_audio_buffer[new_i] = resampled_amplitude;
     }
 
-    audio_buffer.replace(new_audio_buffer, new_audio_length, CLEANUP_WITH_DELETE_1D_ARRAY);
+    audio_buffer.replace(new_audio_buffer, new_audio_length * sizeof(wf_amplitude_t), CLEANUP_WITH_DELETE_1D_ARRAY);
 }
 
 auto Speed::clip_speed(const fx_speed_t overflown_speed) -> fx_speed_t {
