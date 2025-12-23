@@ -10,7 +10,7 @@ using namespace Adapters;
 
 Reverb::Reverb(const fx_reverb_t reverb) : reverb(reverb) {
     freeverb.setwet(static_cast<float>(reverb));
-    freeverb.setdry(fx_reverb_dry_default);
+    freeverb.setdry(1 - freeverb.getwet());
     freeverb.setroomsize(fx_reverb_roomsize_default);
     freeverb.setwidth(fx_reverb_width_default);
     freeverb.setdamp(fx_reverb_damp_default);
