@@ -23,4 +23,16 @@ inline auto interpolate_lerp(
     const double f) -> wf_amplitude_t {
     return clip_amplitude(static_cast<wf_overflown_amplitude_t>(a) + static_cast<wf_overflown_amplitude_t>(f * (static_cast<wf_overflown_amplitude_t>(b) - a)));
 }
+
+inline auto interpolate_cubic_hermite(const wf_amplitude_t a, const wf_amplitude_t b, const wf_amplitude_t c, const wf_amplitude_t d, const double f) -> wf_amplitude_t {
+    const auto m0 = static_cast<wf_amplitude_t>(static_cast<double>(c - a) * 0.5);
+    const auto m1 = static_cast<wf_amplitude_t>(static_cast<double>(d - b) * 0.5);
+    const auto f2 = f * f;
+    const auto f3 = f * f * f;
+
+    return ((2 * f3 - 3 * f2 + 1) * b) +
+           ((f3 - 2 * f2 + f) * m0) +
+           ((-2 * f3 + 3 * f2) * c) +
+           ((f3 - f2) * m1);
+}
 } // namespace HyperstreamRemixer::Sound::Waveform
