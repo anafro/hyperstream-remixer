@@ -1,13 +1,14 @@
 #include "speed.h++"
+#include "HyperstreamRemixer/Sound/Waveform/waveform-types.h++"
 
+#include <HyperstreamRemixer/Arrays/safe-access.h++>
 #include <HyperstreamRemixer/Sound/Waveform/resampling.h++>
 #include <cmath>
 
 namespace HyperstreamRemixer::Sound::Effects {
 using namespace Waveform;
-
-Speed::Speed(const fx_speed_t speed)
-    : speed(1 / clip_speed(speed)) {}
+using namespace Arrays;
+Speed::Speed(const fx_speed_t speed) : speed(clip_speed(1 / speed)) {}
 
 void Speed::apply(Allocation<wf_amplitude_t> &audio_buffer, const wf_channels_t channels, wf_sample_rate_t sample_rate) {
     const auto old_audio_length = audio_buffer.get_length<wf_samples_t>();
@@ -15,17 +16,17 @@ void Speed::apply(Allocation<wf_amplitude_t> &audio_buffer, const wf_channels_t 
     const auto *old_audio_buffer = audio_buffer.raw();
     auto *new_audio_buffer = new wf_amplitude_t[new_audio_length];
 
-    for (wf_samples_t old_i = 0; old_i < old_audio_length; old_i++) {
-        const auto mapped_i = calculate_resampled_sample_index(old_i, speed);
-        const wf_samples_t new_i = std::ceil(static_cast<wf_samples_t>(mapped_i));
-        const wf_amplitude_t a = (old_i >= 1) ? old_audio_buffer[old_i - 1] : 0;
-        const wf_amplitude_t b = old_audio_buffer[old_i];
-        const wf_amplitude_t c = (old_i + 1 < old_audio_length) ? old_audio_buffer[old_i + 1] : 0;
-        const wf_amplitude_t d = (old_i + 2 < old_audio_length) ? old_audio_buffer[old_i + 2] : 0;
-        const auto f = calculate_resampled_fraction(mapped_i, new_i);
-        const auto resampled_amplitude = interpolate_catmull_rom(a, b, c, d, f);
+    for (wf_samples_t resampled_i = 0; resampled_i < new_audio_length; resampled_i++) {
+        const fx_speed_fraction_t original_floating_i = static_cast<fx_speed_fraction_t>(resampled_i) / speed;
+        const wf_samples_t original_i = std::floor(original_floating_i);
+        const wf_amplitude_t amplitude_m1 = safe_get(old_audio_buffer, original_i - 1, old_audio_length, old_audio_buffer[0]);
+        const wf_amplitude_t amplitude_0 = safe_get(old_audio_buffer, original_i, old_audio_length, old_audio_buffer[0]);
+        const wf_amplitude_t amplitude_1 = safe_get(old_audio_buffer, original_i + 1, old_audio_length, amplitude_0);
+        const wf_amplitude_t amplitude_2 = safe_get(old_audio_buffer, original_i + 2, old_audio_length, amplitude_1);
+        const fx_speed_fraction_t resampling_factor = original_floating_i - static_cast<fx_speed_fraction_t>(original_i);
+        const wf_amplitude_t resampled_amplitude = interpolate_cubic_hermite(amplitude_m1, amplitude_0, amplitude_1, amplitude_2, resampling_factor);
 
-        new_audio_buffer[new_i] = resampled_amplitude;
+        safe_set(new_audio_buffer, resampled_i, new_audio_length, resampled_amplitude);
     }
 
     audio_buffer.replace(new_audio_buffer, new_audio_length * sizeof(wf_amplitude_t), CLEANUP_WITH_DELETE_1D_ARRAY);
