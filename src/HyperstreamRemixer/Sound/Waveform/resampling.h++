@@ -16,4 +16,11 @@ inline auto interpolate_catmull_rom(
     const auto od = static_cast<wf_overflown_amplitude_t>(d);
     return clip_amplitude(.5 * ((2 * ob) + (-oa + oc) * f + (2 * oa - 5 * ob + 4 * oc - od) * f * f + (-oa + 3 * ob - 3 * oc + od) * f * f * f));
 }
+
+inline auto interpolate_lerp(
+    const wf_amplitude_t a,
+    const wf_amplitude_t b,
+    const double f) -> wf_amplitude_t {
+    return clip_amplitude(static_cast<wf_overflown_amplitude_t>(a) + static_cast<wf_overflown_amplitude_t>(f * (static_cast<wf_overflown_amplitude_t>(b) - a)));
+}
 } // namespace HyperstreamRemixer::Sound::Waveform
