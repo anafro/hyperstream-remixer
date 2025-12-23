@@ -1,4 +1,5 @@
 #pragma once
+#include "HyperstreamRemixer/Sound/Waveform/waveform-types.h++"
 #include <limits>
 
 namespace HyperstreamRemixer::Sound::Waveform {
