@@ -116,7 +116,7 @@ auto Audio::from_mp3_file(std::initializer_list<AudioEffect *> &&effects, const 
 auto Audio::apply_effects(const Allocation<wf_amplitude_t> &buffer) const -> Allocation<wf_amplitude_t> {
     auto buffer_copy = buffer.create_copy();
 
-    for (const auto effect : effects) {
+    for (auto *effect : effects) {
         effect->apply(buffer_copy, this->channels, this->frequency);
     }
 
