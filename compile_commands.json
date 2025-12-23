@@ -291,6 +291,29 @@
       "-std=gnu++23",
       "-c",
       "-o",
+      "CMakeFiles/HyperstreamRemixer.dir/src/HyperstreamRemixer/Sound/Effects/lowpass.c++.o",
+      "/home/anafro/Root/C++/Hyperstream-Remixer/src/HyperstreamRemixer/Sound/Effects/lowpass.c++"
+    ],
+    "directory": "/home/anafro/Root/C++/Hyperstream-Remixer/build",
+    "file": "/home/anafro/Root/C++/Hyperstream-Remixer/src/HyperstreamRemixer/Sound/Effects/lowpass.c++",
+    "output": "/home/anafro/Root/C++/Hyperstream-Remixer/build/CMakeFiles/HyperstreamRemixer.dir/src/HyperstreamRemixer/Sound/Effects/lowpass.c++.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-DSDL_MAIN_HANDLED",
+      "-I/home/anafro/Root/C++/Hyperstream-Remixer/src",
+      "-I/home/anafro/Root/C++/Hyperstream-Remixer/src/ImGui",
+      "-isystem",
+      "/home/anafro/Root/C++/Hyperstream-Remixer/build/vcpkg_installed/x64-linux/include",
+      "-isystem",
+      "/home/anafro/Root/C++/Hyperstream-Remixer/build/vcpkg_installed/x64-linux/include/SDL2",
+      "-fsanitize=address",
+      "-fno-omit-frame-pointer",
+      "-g",
+      "-std=gnu++23",
+      "-c",
+      "-o",
       "CMakeFiles/HyperstreamRemixer.dir/src/HyperstreamRemixer/Sound/Effects/reverb.c++.o",
       "/home/anafro/Root/C++/Hyperstream-Remixer/src/HyperstreamRemixer/Sound/Effects/reverb.c++"
     ],
