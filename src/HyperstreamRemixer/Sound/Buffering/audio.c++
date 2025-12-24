@@ -70,7 +70,7 @@ void Audio::play() {
     std::size_t offset = 0;
     SDL_PauseAudioDevice(dev, 0);
 
-    while (offset < total_bytes) {
+    while (not this->buffer_with_effects.is_null() and offset < total_bytes) {
         const std::size_t bytes_to_queue = std::min(chunk_bytes, total_bytes - offset);
 
         SDL_QueueAudio(dev, this->buffer_with_effects.raw() + offset / sizeof(wf_amplitude_t), bytes_to_queue);

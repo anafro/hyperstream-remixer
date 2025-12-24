@@ -43,7 +43,7 @@ __REMIXER_COERCE_INLINE void render_visual_audio_debugger(GLFWwindow *window, Al
         is_first_frame = false;
 
         std::thread([&window, &audio]() -> void {
-            while (glfwWindowShouldClose(window) == 0) {
+            while (glfwWindowShouldClose(window) == 0 and not audio.is_null()) {
                 audio->play();
             }
         }).detach();
