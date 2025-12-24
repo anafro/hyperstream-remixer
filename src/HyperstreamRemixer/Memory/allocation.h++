@@ -23,8 +23,8 @@ template <typename T>
 class Allocation final {
   public:
     Allocation() = delete;
-    Allocation(const Allocation &) = delete;
     Allocation(Allocation &&) noexcept;
+    Allocation(const Allocation &that);
     Allocation(T *ptr, std::size_t size,
                allocation_cleanup_strategy_t cleanup_strategy);
     ~Allocation();
@@ -53,6 +53,10 @@ class Allocation final {
     allocation_cleanup_strategy_t cleanup_strategy;
     void cleanup();
 };
+
+template <typename T>
+Allocation<T>::Allocation(const Allocation &that)
+    : Allocation(that.ptr, that.size, DONT_CLEANUP) {}
 
 template <typename T>
 Allocation<T>::Allocation(T *ptr, const std::size_t size,
