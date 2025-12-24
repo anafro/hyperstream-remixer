@@ -10,6 +10,7 @@
 #include <HyperstreamRemixer/Memory/Exceptions/allocation-clone-copy-exception.h++>
 
 #include "HyperstreamRemixer/Debug/print.h++"
+#include <HyperstreamRemixer/Runtime/interrupt.h++>
 
 namespace HyperstreamRemixer::Memory {
 using namespace Exceptions;
@@ -193,6 +194,7 @@ auto Allocation<T>::null() -> Allocation<T> {
 
 template <typename T>
 void Allocation<T>::cleanup() {
+    using Runtime::InterruptionNature;
     if (this->ptr == nullptr) {
         return;
     }
@@ -211,7 +213,7 @@ void Allocation<T>::cleanup() {
         delete[] this->ptr;
         break;
     default:
-        throw UnknownMemoryCleanupStrategyException();
+        Runtime::interrupt(Runtime::UNKNOWN_CLEANUP_STRATEGY);
     }
 
     this->ptr = nullptr;
