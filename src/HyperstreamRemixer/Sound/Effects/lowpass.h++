@@ -3,6 +3,10 @@
 
 namespace HyperstreamRemixer::Sound::Effects {
 using fx_lowpass_parameter_t = float;
+using fx_lowpass_parameter_t = double;
+const constexpr fx_lowpass_parameter_t fx_lowpass_cutoff_min = 0_percent;
+const constexpr fx_lowpass_parameter_t fx_lowpass_cutoff_default = 40_percent;
+const constexpr fx_lowpass_parameter_t fx_lowpass_cutoff_max = 200_percent;
 const constexpr fx_lowpass_parameter_t butterworth_quality = 0.70710678118654752440F;
 
 class Lowpass final : public AudioEffect {
