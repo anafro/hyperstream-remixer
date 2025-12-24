@@ -1,8 +1,10 @@
 #pragma once
 #include "HyperstreamRemixer/Sound/Effects/audio-effect.h++"
+#include "HyperstreamRemixer/Sugar/percents.h++"
 
 namespace HyperstreamRemixer::Sound::Effects {
 using fx_lowpass_parameter_t = float;
+using namespace Sugar;
 using fx_lowpass_parameter_t = double;
 const constexpr fx_lowpass_parameter_t fx_lowpass_cutoff_min = 0_percent;
 const constexpr fx_lowpass_parameter_t fx_lowpass_cutoff_default = 40_percent;
