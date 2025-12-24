@@ -13,7 +13,7 @@
 namespace HyperstreamRemixer::Memory {
 using namespace Exceptions;
 
-typedef uint8_t allocation_cleanup_strategy_t;
+using allocation_cleanup_strategy_t = uint8_t;
 constexpr allocation_cleanup_strategy_t DONT_CLEANUP = 0x00;
 constexpr allocation_cleanup_strategy_t CLEANUP_WITH_FREE = 0x01;
 constexpr allocation_cleanup_strategy_t CLEANUP_WITH_DELETE = 0x02;
