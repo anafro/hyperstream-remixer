@@ -12,6 +12,8 @@ const constexpr fx_lowpass_parameter_t butterworth_quality = 0.70710678118654752
 class Lowpass final : public AudioEffect {
   public:
     Lowpass(fx_lowpass_parameter_t cutoff, float quality = butterworth_quality);
+    fx_lowpass_parameter_t cutoff;
+
     Lowpass(const Lowpass &) = default;
     Lowpass(Lowpass &&) = default;
     auto operator=(const Lowpass &) -> Lowpass & = default;
@@ -19,7 +21,6 @@ class Lowpass final : public AudioEffect {
     void apply(Allocation<wf_amplitude_t> &audio_buffer, wf_channels_t channels, wf_sample_rate_t sample_rate) override;
 
   private:
-    fx_lowpass_parameter_t cutoff;
     fx_lowpass_parameter_t quality;
     fx_lowpass_parameter_t b0;
     fx_lowpass_parameter_t b1;
