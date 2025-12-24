@@ -17,7 +17,7 @@ __REMIXER_COERCE_INLINE void interrupt(InterruptionNature interruption_nature) {
         {OK, "Successfully finished"},
         {UNKNOWN_CLEANUP_STRATEGY, "An unknown allocation cleanup strategy is used"}};
 
-    const auto message = map_get(interruption_messages, interruption_nature).value_or(std::format("Interrupted with code {}", interruption_nature, static_cast<interruption_nature_ordinal_t>(interruption_nature));
+    const auto message = map_get(interruption_messages, interruption_nature).value_or(std::format("Interrupted with code {}", static_cast<interruption_nature_ordinal_t>(interruption_nature)));
     std::cerr << message << '\n';
     std::exit(interruption_nature);
 }
