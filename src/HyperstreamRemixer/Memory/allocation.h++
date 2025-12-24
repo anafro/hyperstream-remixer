@@ -44,6 +44,7 @@ class Allocation final {
     [[nodiscard]] auto get_size() const -> std::size_t;
     template <typename S = std::size_t>
     [[nodiscard]] auto get_length() const -> S;
+    [[nodiscard]] auto is_null() const -> bool;
     static auto null() -> Allocation;
 
   private:
@@ -183,6 +184,11 @@ template <typename T>
 template <typename S>
 auto Allocation<T>::get_length() const -> S {
     return S(this->size / sizeof(T));
+}
+
+template <typename T>
+auto Allocation<T>::is_null() const -> bool {
+    return this->ptr == nullptr;
 }
 
 template <typename T>
