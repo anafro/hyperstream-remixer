@@ -23,8 +23,8 @@ template <typename T>
 class Allocation final {
   public:
     Allocation() = delete;
-    Allocation(Allocation &&) noexcept;
     Allocation(const Allocation &that);
+    Allocation(Allocation &&that) noexcept;
     Allocation(T *ptr, std::size_t size,
                allocation_cleanup_strategy_t cleanup_strategy);
     ~Allocation();
@@ -32,7 +32,7 @@ class Allocation final {
                  allocation_cleanup_strategy_t new_cleanup_strategy);
     [[nodiscard]] auto get_cleanup_strategy() const -> allocation_cleanup_strategy_t;
     auto operator=(const Allocation &) -> Allocation & = delete;
-    auto operator=(Allocation &&that) -> Allocation &;
+    auto operator=(Allocation &&that) noexcept -> Allocation &;
     auto raw() -> T *;
     auto raw() const -> const T *;
     auto operator->() -> T *;
@@ -89,7 +89,7 @@ auto Allocation<T>::get_cleanup_strategy() const -> allocation_cleanup_strategy_
 }
 
 template <typename T>
-auto Allocation<T>::operator=(Allocation<T> &&that) -> Allocation<T> & {
+auto Allocation<T>::operator=(Allocation<T> &&that) noexcept -> Allocation<T> & {
     this->cleanup();
     this->ptr = that.ptr;
     this->size = that.size;
