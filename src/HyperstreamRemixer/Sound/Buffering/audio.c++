@@ -39,7 +39,7 @@ Audio::Audio(
 }
 
 Audio::~Audio() {
-    for (const auto effect : this->effects) {
+    for (auto *const effect : this->effects) {
         delete effect;
     }
 
