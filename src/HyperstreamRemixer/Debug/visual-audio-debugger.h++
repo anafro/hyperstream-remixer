@@ -1,5 +1,6 @@
 #pragma once
 #include "HyperstreamRemixer/Macros/coerce-inline.h++"
+#include "HyperstreamRemixer/Sound/Effects/lowpass.h++"
 #include <HyperstreamRemixer/Environment/configuration.h++>
 #include <HyperstreamRemixer/Sound/Buffering/audio.h++>
 #include <HyperstreamRemixer/Sound/Effects/eq.h++>
@@ -35,18 +36,13 @@ inline constexpr double window_fill_g = 0.100;
 inline constexpr double window_fill_b = 0.100;
 inline constexpr double window_fill_a = 1.000;
 
-__REMIXER_COERCE_INLINE void render_visual_audio_debugger(GLFWwindow *window) {
-    static auto *remainder = new Remainder();
-    static auto *reverb = new Reverb();
-    static auto *speed = new Speed();
-    static auto *equalizer = new EQ();
-    static auto audio = object(Audio::from_mp3_file({remainder, reverb, speed, equalizer}, sound_file_path, APPLY_FX_ON_PLAY));
+__REMIXER_COERCE_INLINE void render_visual_audio_debugger(GLFWwindow *window, Allocation<Audio> &audio, Reverb *reverb, Speed *speed, Lowpass *lowpass) {
     static bool is_first_frame = true;
 
     if (is_first_frame) {
         is_first_frame = false;
 
-        std::thread([&window]() -> void {
+        std::thread([&window, &audio]() -> void {
             while (glfwWindowShouldClose(window) == 0) {
                 audio->play();
             }
@@ -56,14 +52,7 @@ __REMIXER_COERCE_INLINE void render_visual_audio_debugger(GLFWwindow *window) {
     ImGui::Begin(debugger_title);
     ImGui::DragScalar("Reverb", ImGuiDataType_Double, &reverb->reverb, slider_step, &fx_reverb_min, &fx_reverb_max, slider_value_format);
     ImGui::DragScalar("Speed", ImGuiDataType_Double, &speed->speed, slider_step, &fx_speed_min, &fx_speed_max, slider_value_format);
-    ImGui::SeparatorText("Multiband EQ");
-    for (std::size_t i = 0; i < eq_bands; i++) {
-        if (i != 0) {
-            ImGui::SameLine();
-        }
-
-        ImGui::VSliderScalar(std::to_string(i).c_str(), ImVec2(eq_band_width, eq_band_height), ImGuiDataType_Double, &equalizer->bands[i], &eq_gain_min, &eq_gain_max, "");
-    }
+    ImGui::DragScalar("Lowpass Cutoff", ImGuiDataType_Double, &lowpass->cutoff, slider_step, &fx_lowpass_cutoff_min, &fx_lowpass_cutoff_max, slider_value_format);
 
     if (ImGui::Button("Quit")) {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
@@ -78,6 +67,12 @@ static void glfw_error_callback(const int error, const char *description) {
 
 inline void $show_visual_debugger() {
 #ifdef REMIXER_VISUAL_DEBUGGER_ON
+    auto *remainder = new Remainder(1s);
+    auto *reverb = new Reverb();
+    auto *speed = new Speed();
+    auto *lowpass = new Lowpass();
+    auto audio = object(Audio::from_mp3_file({remainder, reverb, speed, lowpass}, sound_file_path, APPLY_FX_ON_PLAY));
+
     glfwSetErrorCallback(glfw_error_callback);
     if (glfwInit() == 0) {
         exit(EXIT_FAILURE);
@@ -112,7 +107,7 @@ inline void $show_visual_debugger() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        render_visual_audio_debugger(window);
+        render_visual_audio_debugger(window, audio, reverb, speed, lowpass);
 
         ImGui::Render();
         int display_w;
