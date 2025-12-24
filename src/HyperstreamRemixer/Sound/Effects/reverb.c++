@@ -9,15 +9,11 @@ using namespace Waveform;
 using namespace Adapters;
 
 Reverb::Reverb(const fx_reverb_t reverb) : reverb(reverb) {
-    freeverb.setwet(static_cast<float>(reverb));
-    freeverb.setdry(1 - freeverb.getwet());
-    freeverb.setroomsize(fx_reverb_roomsize_default);
-    freeverb.setwidth(fx_reverb_width_default);
-    freeverb.setdamp(fx_reverb_damp_default);
-    freeverb.setmode(fx_reverb_mode_default);
+    this->update_freeverb_params();
 }
 
 void Reverb::apply(Allocation<wf_amplitude_t> &audio_buffer, const wf_channels_t channels, const wf_sample_rate_t sample_rate) {
+    this->update_freeverb_params();
     const auto audio_length = audio_buffer.get_length<wf_samples_t>();
     std::vector<fv_amplitude_t> fv_in_left(audio_length);
     std::vector<fv_amplitude_t> fv_in_right(audio_length);
@@ -36,5 +32,14 @@ void Reverb::apply(Allocation<wf_amplitude_t> &audio_buffer, const wf_channels_t
     for (wf_samples_t sample_index = 0; sample_index < audio_length; sample_index++) {
         audio_buffer.raw()[sample_index] = from_fv_amplitude(fv_out_left[sample_index]);
     }
+}
+
+void Reverb::update_freeverb_params() {
+    freeverb.setwet(static_cast<float>(reverb));
+    freeverb.setdry(1 - freeverb.getwet());
+    freeverb.setroomsize(fx_reverb_roomsize_default);
+    freeverb.setwidth(fx_reverb_width_default);
+    freeverb.setdamp(fx_reverb_damp_default);
+    freeverb.setmode(fx_reverb_mode_default);
 }
 } // namespace HyperstreamRemixer::Sound::Effects
