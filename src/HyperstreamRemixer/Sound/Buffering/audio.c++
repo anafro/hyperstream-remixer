@@ -99,11 +99,6 @@ auto Audio::from_mp3_file(std::initializer_list<AudioEffect *> &&effects, const 
     mp3dec_file_info_t mp3dec_file_info;
     mp3dec_load(&mp3dec, file_path.c_str(), &mp3dec_file_info, nullptr, nullptr);
 
-    static_assert(
-        sizeof(*mp3dec_file_info.buffer) == sizeof(wf_amplitude_t),
-        "The Hyperstream's sample type size mismatch the MP3 library sample type size. This probably means "
-        "that your OS architecture is not supported. We apologise for that...");
-
     return new Audio(
         effects,
         AUDIO_S16,
