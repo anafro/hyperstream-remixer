@@ -6,7 +6,7 @@
 #include <vector>
 
 namespace HyperstreamRemixer::Sound::Buffering {
-typedef std::byte audio_fx_behavior_t;
+using audio_fx_behavior_t = std::byte;
 constexpr audio_fx_behavior_t APPLY_FX_NOW{0x00};
 constexpr audio_fx_behavior_t APPLY_FX_ON_PLAY{0x01};
 
