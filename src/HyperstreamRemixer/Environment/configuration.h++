@@ -1,7 +1,7 @@
 #pragma once
 
 /// Makes $() console out the passed values to them.
-/// Comment this define to disable $() debug prints.
+/// Comment this macro to disable $() debug prints.
 /// To see more detailed information, see print.h++.
 #define REMIXER_$_PRINTS_ON
 
