@@ -10,10 +10,10 @@ using namespace Waveform;
 using namespace Arrays;
 Speed::Speed(const fx_speed_t speed) : speed(clip_speed(1 / speed)) {}
 
-void Speed::apply(Allocation<wf_amplitude_t> &audio_buffer, const wf_channels_t channels, wf_sample_rate_t sample_rate) {
-    const auto old_audio_length = audio_buffer.get_length<wf_samples_t>();
+void Speed::apply(Unit<wf_amplitude_t> &audio_buffer, const wf_channels_t channels, wf_sample_rate_t sample_rate) {
+    const auto old_audio_length = audio_buffer.length();
     const auto new_audio_length = calculate_resampled_audio_length(old_audio_length, speed);
-    const auto *old_audio_buffer = audio_buffer.raw();
+    const auto *old_audio_buffer = *audio_buffer;
     auto *new_audio_buffer = new wf_amplitude_t[new_audio_length];
 
     for (wf_samples_t resampled_i = 0; resampled_i < new_audio_length; resampled_i++) {
@@ -29,7 +29,7 @@ void Speed::apply(Allocation<wf_amplitude_t> &audio_buffer, const wf_channels_t 
         safe_set(new_audio_buffer, resampled_i, new_audio_length, resampled_amplitude);
     }
 
-    audio_buffer.replace(new_audio_buffer, new_audio_length * sizeof(wf_amplitude_t), CLEANUP_WITH_DELETE_1D_ARRAY);
+    audio_buffer.replace(CXX_ARRAY, new_audio_buffer, new_audio_length * sizeof(wf_amplitude_t));
 }
 
 auto Speed::clip_speed(const fx_speed_t overflown_speed) -> fx_speed_t {

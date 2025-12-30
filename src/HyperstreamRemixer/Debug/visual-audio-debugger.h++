@@ -36,17 +36,11 @@ inline constexpr double window_fill_g = 0.100;
 inline constexpr double window_fill_b = 0.100;
 inline constexpr double window_fill_a = 1.000;
 
-__REMIXER_COERCE_INLINE void render_visual_audio_debugger(GLFWwindow *window, Allocation<Audio> &audio, Reverb *reverb, Speed *speed, Lowpass *lowpass) {
+__REMIXER_COERCE_INLINE void render_visual_audio_debugger(GLFWwindow *window, Unit<Audio> audio, Reverb *reverb, Speed *speed, Lowpass *lowpass) {
     static bool is_first_frame = true;
 
     if (is_first_frame) {
         is_first_frame = false;
-
-        std::thread([&window, &audio]() -> void {
-            while (glfwWindowShouldClose(window) == 0 and not audio.is_null()) {
-                audio->play();
-            }
-        }).detach();
     }
 
     ImGui::Begin(debugger_title);
@@ -71,7 +65,7 @@ inline void $show_visual_debugger() {
     auto *reverb = new Reverb();
     auto *speed = new Speed();
     auto *lowpass = new Lowpass();
-    auto audio = object(Audio::from_mp3_file({remainder, reverb, speed, lowpass}, sound_file_path, APPLY_FX_ON_PLAY));
+    auto audio = Audio::from_mp3_file({remainder, reverb, speed, lowpass}, sound_file_path, APPLY_FX_ON_PLAY);
 
     glfwSetErrorCallback(glfw_error_callback);
     if (glfwInit() == 0) {
@@ -87,6 +81,14 @@ inline void $show_visual_debugger() {
     if (window == nullptr) {
         exit(EXIT_FAILURE);
     }
+
+    std::thread([&window, audio]() mutable -> void {
+        Unit<Audio> audio_copy = audio;
+        // while (glfwWindowShouldClose(window) == 0 and audio_copy.non_null()) {
+        //     audio_copy->play();
+        //     std::println("{}", audio_copy.to_string());
+        //}
+    }).detach();
 
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);

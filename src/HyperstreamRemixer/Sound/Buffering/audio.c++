@@ -11,7 +11,6 @@
 
 #include "Exceptions/audio-file-not-found-exception.h++"
 #include "Exceptions/unknown-audio-fx-behavior-exception.h++"
-#include "HyperstreamRemixer/Performance/stopwatch.h++"
 
 namespace HyperstreamRemixer::Sound::Buffering {
 using namespace Exceptions;
@@ -19,11 +18,11 @@ using namespace Exceptions;
 Audio::Audio(
     std::vector<AudioEffect *> &&effects,
     const SDL_AudioFormat audio_format,
-    Allocation<wf_amplitude_t> &&buffer,
+    Unit<wf_amplitude_t> &&buffer,
     const wf_frequency_t frequency,
     const wf_channels_t channels,
     const audio_fx_behavior_t fx_behavior)
-    : effects(std::move(effects)), audio_format(audio_format), original_buffer(std::move(buffer)), buffer_with_effects(Allocation<wf_amplitude_t>::null()), frequency(frequency), channels(channels), fx_behavior(fx_behavior) {
+    : effects(std::move(effects)), audio_format(audio_format), original_buffer(std::move(buffer)), buffer_with_effects(Unit<wf_amplitude_t>::null()), frequency(frequency), channels(channels), fx_behavior(fx_behavior) {
     switch (fx_behavior) {
     case APPLY_FX_NOW:
         this->buffer_with_effects = std::move(this->apply_effects(this->original_buffer));
@@ -73,7 +72,7 @@ void Audio::play() {
     while (not this->buffer_with_effects.is_null() and offset < total_bytes) {
         const std::size_t bytes_to_queue = std::min(chunk_bytes, total_bytes - offset);
 
-        SDL_QueueAudio(dev, this->buffer_with_effects.raw() + offset / sizeof(wf_amplitude_t), bytes_to_queue);
+        SDL_QueueAudio(dev, *this->buffer_with_effects + (offset / sizeof(wf_amplitude_t)), bytes_to_queue);
 
         while (SDL_GetQueuedAudioSize(dev) > 4 * chunk_bytes) {
             SDL_Delay(10);
@@ -90,7 +89,7 @@ void Audio::play() {
 }
 
 [[nodiscard]]
-auto Audio::from_mp3_file(std::initializer_list<AudioEffect *> &&effects, const std::string &file_path, const audio_fx_behavior_t fx_behavior) -> Audio * {
+auto Audio::from_mp3_file(std::initializer_list<AudioEffect *> &&effects, const std::string &file_path, const audio_fx_behavior_t fx_behavior) -> Unit<Audio> {
     if (not std::filesystem::exists(file_path)) {
         throw AudioFileNotFoundException(file_path);
     }
@@ -99,17 +98,19 @@ auto Audio::from_mp3_file(std::initializer_list<AudioEffect *> &&effects, const 
     mp3dec_file_info_t mp3dec_file_info;
     mp3dec_load(&mp3dec, file_path.c_str(), &mp3dec_file_info, nullptr, nullptr);
 
-    return new Audio(
-        effects,
-        AUDIO_S16,
-        Allocation(mp3dec_file_info.buffer, mp3dec_file_info.samples * mp3dec_file_info.channels, CLEANUP_WITH_FREE),
-        mp3dec_file_info.hz,
-        mp3dec_file_info.channels,
-        fx_behavior);
+    auto audio_buffer = Unit<wf_amplitude_t>::wrap_array(C_ARRAY, mp3dec_file_info.buffer, mp3dec_file_info.samples);
+
+    return Unit<Audio>::wrap_object(CXX, new Audio(
+                                             effects,
+                                             AUDIO_S16,
+                                             std::move(audio_buffer),
+                                             mp3dec_file_info.hz,
+                                             mp3dec_file_info.channels,
+                                             fx_behavior));
 }
 
-auto Audio::apply_effects(const Allocation<wf_amplitude_t> &buffer) const -> Allocation<wf_amplitude_t> {
-    auto buffer_copy = buffer.create_copy();
+auto Audio::apply_effects(const Unit<wf_amplitude_t> &buffer) const -> Unit<wf_amplitude_t> {
+    auto buffer_copy = buffer.copy();
 
     for (auto *effect : effects) {
         effect->apply(buffer_copy, this->channels, this->frequency);
@@ -119,6 +120,6 @@ auto Audio::apply_effects(const Allocation<wf_amplitude_t> &buffer) const -> All
 }
 
 auto Audio::get_samples() const -> wf_samples_t {
-    return this->buffer_with_effects.get_length<>();
+    return this->buffer_with_effects.length();
 }
 } // namespace HyperstreamRemixer::Sound::Buffering

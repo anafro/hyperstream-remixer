@@ -19,7 +19,7 @@ class Lowpass final : public AudioEffect {
     Lowpass(Lowpass &&) = default;
     auto operator=(const Lowpass &) -> Lowpass & = default;
     auto operator=(Lowpass &&) -> Lowpass & = default;
-    void apply(Allocation<wf_amplitude_t> &audio_buffer, wf_channels_t channels, wf_sample_rate_t sample_rate) override;
+    void apply(Unit<wf_amplitude_t> &audio_buffer, wf_channels_t channels, wf_sample_rate_t sample_rate) override;
 
   private:
     fx_lowpass_parameter_t quality;

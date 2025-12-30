@@ -25,6 +25,6 @@ class Crackle final : public AudioEffect {
     fx_crackle_probability_t probability;
     fx_crackle_steps_t steps;
     Crackle(fx_crackle_probability_t probability = fx_crackle_probability_default, fx_crackle_steps_t steps = fx_crackle_steps_default);
-    void apply(Allocation<wf_amplitude_t> &audio_buffer, wf_channels_t channels, wf_sample_rate_t sample_rate) override;
+    void apply(Unit<wf_amplitude_t> &audio_buffer, wf_channels_t channels, wf_sample_rate_t sample_rate) override;
 };
 } // namespace HyperstreamRemixer::Sound::Effects

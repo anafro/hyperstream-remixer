@@ -8,3 +8,7 @@
 /// Makes Remixer show an imgui debug audio visualiser.
 /// Comment this macro to prevent showing the visualiser.
 #define REMIXER_VISUAL_DEBUGGER_ON
+
+/// Makes Runtime::interrupt exit the application.
+/// Comment this macro to prevent Remixer exit on interruption.
+#define REMIXER_EXIT_ON_INTERRUPTION_ON

@@ -28,7 +28,7 @@ auto EQ::from_bands(std::array<std::string, eq_bands + 1 /* <- for scale */> asc
     return new EQ(band_gains);
 }
 
-void EQ::apply(Allocation<wf_amplitude_t> &audio_buffer,
+void EQ::apply(Unit<wf_amplitude_t> &audio_buffer,
                const wf_channels_t channels,
                const wf_sample_rate_t sample_rate) {
     using std::cos;
@@ -65,7 +65,7 @@ void EQ::apply(Allocation<wf_amplitude_t> &audio_buffer,
         band.b2 = a2 / a0;
     }
 
-    const std::size_t total_samples = audio_buffer.get_length();
+    const std::size_t total_samples = audio_buffer.length();
     const std::size_t frames = total_samples / channels;
 
     std::vector z1(bands.size(), std::vector(channels, 0.0f));
@@ -74,7 +74,7 @@ void EQ::apply(Allocation<wf_amplitude_t> &audio_buffer,
     for (std::size_t frame = 0; frame < frames; ++frame) {
         for (std::size_t ch = 0; ch < channels; ++ch) {
             const std::size_t idx = frame + ch;
-            float s = Adapters::fv_amplitude(audio_buffer.raw()[idx]);
+            float s = Adapters::fv_amplitude(audio_buffer[idx]);
 
             for (std::size_t bi = 0; bi < bands.size(); ++bi) {
                 auto &band = bands[bi];
@@ -89,7 +89,7 @@ void EQ::apply(Allocation<wf_amplitude_t> &audio_buffer,
                 s = out;
             }
 
-            audio_buffer.raw()[idx] = Adapters::from_fv_amplitude(s);
+            audio_buffer[idx] = Adapters::from_fv_amplitude(s);
         }
     }
 }

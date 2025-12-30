@@ -63,7 +63,7 @@ class EQ final : public AudioEffect {
   public:
     explicit EQ(std::array<eq_gain_t, eq_bands> band_gains = eq_band_gains_default);
     static auto from_bands(std::array<std::string, eq_bands + 1 /* <- for scale */> ascii_eq) -> EQ *;
-    void apply(Allocation<wf_amplitude_t> &audio_buffer, wf_channels_t channels, wf_sample_rate_t sample_rate) override;
+    void apply(Unit<wf_amplitude_t> &audio_buffer, wf_channels_t channels, wf_sample_rate_t sample_rate) override;
     std::array<EQBand, eq_bands> bands;
 };
 

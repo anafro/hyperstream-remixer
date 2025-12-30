@@ -15,6 +15,6 @@ class Noise final : public AudioEffect {
   public:
     fx_noise_strength_t strength;
     Noise(fx_noise_strength_t strength = fx_noise_strength_default);
-    void apply(Allocation<wf_amplitude_t> &audio_buffer, wf_channels_t channels, wf_sample_rate_t sample_rate) override;
+    void apply(Unit<wf_amplitude_t> &audio_buffer, wf_channels_t channels, wf_sample_rate_t sample_rate) override;
 };
 } // namespace HyperstreamRemixer::Sound::Effects

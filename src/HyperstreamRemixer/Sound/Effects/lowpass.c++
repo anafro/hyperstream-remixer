@@ -10,7 +10,7 @@ using namespace Waveform;
 Lowpass::Lowpass(fx_lowpass_parameter_t cutoff, float quality)
     : cutoff(cutoff), quality(quality) {}
 
-void Lowpass::apply(Allocation<wf_amplitude_t> &audio_buffer, wf_channels_t channels, wf_sample_rate_t sample_rate) {
+void Lowpass::apply(Unit<wf_amplitude_t> &audio_buffer, wf_channels_t channels, wf_sample_rate_t sample_rate) {
     this->z1 = 0.0F;
     this->z2 = 0.0F;
     const fx_lowpass_parameter_t w0 = 2 * static_cast<fx_lowpass_parameter_t>(std::numbers::pi) * cutoff;
@@ -26,13 +26,13 @@ void Lowpass::apply(Allocation<wf_amplitude_t> &audio_buffer, wf_channels_t chan
     a1 = -2.0F * cosw / a0;
     a2 = (1.0F - alpha) / a0;
 
-    const auto audio_length = audio_buffer.get_length<wf_samples_t>();
+    const auto audio_length = audio_buffer.length();
     for (wf_samples_t i = 0; i < audio_length; i++) {
         const wf_amplitude_t original_amplitude = (*audio_buffer)[i];
         const wf_amplitude_t lowpassed_amplitude = clip_amplitude(static_cast<wf_overflown_amplitude_t>((this->b0 * static_cast<fx_lowpass_parameter_t>(original_amplitude)) + this->z1));
         this->z1 = (this->b1 * static_cast<fx_lowpass_parameter_t>(original_amplitude)) - (this->a1 * static_cast<fx_lowpass_parameter_t>(lowpassed_amplitude)) + this->z2;
         this->z1 = (this->b2 * static_cast<fx_lowpass_parameter_t>(original_amplitude)) - (this->a2 * static_cast<fx_lowpass_parameter_t>(lowpassed_amplitude));
-        (*audio_buffer)[i] = lowpassed_amplitude;
+        audio_buffer[i] = lowpassed_amplitude;
     }
 }
 } // namespace HyperstreamRemixer::Sound::Effects

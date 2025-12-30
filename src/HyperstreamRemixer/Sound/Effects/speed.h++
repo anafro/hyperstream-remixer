@@ -16,7 +16,7 @@ inline constinit fx_speed_t fx_speed_max = 400_percent;
 class Speed final : public AudioEffect {
   public:
     explicit Speed(fx_speed_t speed = fx_speed_default);
-    void apply(Allocation<wf_amplitude_t> &audio_buffer, wf_channels_t channels, wf_sample_rate_t sample_rate) override;
+    void apply(Unit<wf_amplitude_t> &audio_buffer, wf_channels_t channels, wf_sample_rate_t sample_rate) override;
     fx_speed_t speed;
 
   private:

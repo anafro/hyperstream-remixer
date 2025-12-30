@@ -12,9 +12,9 @@ Reverb::Reverb(const fx_reverb_t reverb) : reverb(reverb) {
     this->update_freeverb_params();
 }
 
-void Reverb::apply(Allocation<wf_amplitude_t> &audio_buffer, const wf_channels_t channels, const wf_sample_rate_t sample_rate) {
+void Reverb::apply(Unit<wf_amplitude_t> &audio_buffer, const wf_channels_t channels, const wf_sample_rate_t sample_rate) {
     this->update_freeverb_params();
-    const auto audio_length = audio_buffer.get_length<wf_samples_t>();
+    const auto audio_length = audio_buffer.length();
     std::vector<fv_amplitude_t> fv_in_left(audio_length);
     std::vector<fv_amplitude_t> fv_in_right(audio_length);
     std::vector<fv_amplitude_t> fv_out_left(audio_length);
@@ -30,7 +30,7 @@ void Reverb::apply(Allocation<wf_amplitude_t> &audio_buffer, const wf_channels_t
     freeverb.processmix(fv_in_left.data(), fv_in_right.data(), fv_out_left.data(), fv_out_right.data(), fv_audio_length, 1);
 
     for (wf_samples_t sample_index = 0; sample_index < audio_length; sample_index++) {
-        audio_buffer.raw()[sample_index] = from_fv_amplitude(fv_out_left[sample_index]);
+        audio_buffer[sample_index] = from_fv_amplitude(fv_out_left[sample_index]);
     }
 }
 
