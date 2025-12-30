@@ -153,6 +153,29 @@
       "-std=gnu++23",
       "-c",
       "-o",
+      "CMakeFiles/HyperstreamRemixer.dir/src/HyperstreamRemixer/Multithreading/optional-lock.c++.o",
+      "/home/anafro/Root/C++/Hyperstream-Remixer/src/HyperstreamRemixer/Multithreading/optional-lock.c++"
+    ],
+    "directory": "/home/anafro/Root/C++/Hyperstream-Remixer/build",
+    "file": "/home/anafro/Root/C++/Hyperstream-Remixer/src/HyperstreamRemixer/Multithreading/optional-lock.c++",
+    "output": "/home/anafro/Root/C++/Hyperstream-Remixer/build/CMakeFiles/HyperstreamRemixer.dir/src/HyperstreamRemixer/Multithreading/optional-lock.c++.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-DSDL_MAIN_HANDLED",
+      "-I/home/anafro/Root/C++/Hyperstream-Remixer/src",
+      "-I/home/anafro/Root/C++/Hyperstream-Remixer/src/ImGui",
+      "-isystem",
+      "/home/anafro/Root/C++/Hyperstream-Remixer/build/vcpkg_installed/x64-linux/include",
+      "-isystem",
+      "/home/anafro/Root/C++/Hyperstream-Remixer/build/vcpkg_installed/x64-linux/include/SDL2",
+      "-fsanitize=address",
+      "-fno-omit-frame-pointer",
+      "-g",
+      "-std=gnu++23",
+      "-c",
+      "-o",
       "CMakeFiles/HyperstreamRemixer.dir/src/HyperstreamRemixer/Sound/Buffering/Exceptions/audio-file-not-found-exception.c++.o",
       "/home/anafro/Root/C++/Hyperstream-Remixer/src/HyperstreamRemixer/Sound/Buffering/Exceptions/audio-file-not-found-exception.c++"
     ],
@@ -458,6 +481,29 @@
     "directory": "/home/anafro/Root/C++/Hyperstream-Remixer/build",
     "file": "/home/anafro/Root/C++/Hyperstream-Remixer/src/HyperstreamRemixer/Sound/Exceptions/sdl-init-exception.c++",
     "output": "/home/anafro/Root/C++/Hyperstream-Remixer/build/CMakeFiles/HyperstreamRemixer.dir/src/HyperstreamRemixer/Sound/Exceptions/sdl-init-exception.c++.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-DSDL_MAIN_HANDLED",
+      "-I/home/anafro/Root/C++/Hyperstream-Remixer/src",
+      "-I/home/anafro/Root/C++/Hyperstream-Remixer/src/ImGui",
+      "-isystem",
+      "/home/anafro/Root/C++/Hyperstream-Remixer/build/vcpkg_installed/x64-linux/include",
+      "-isystem",
+      "/home/anafro/Root/C++/Hyperstream-Remixer/build/vcpkg_installed/x64-linux/include/SDL2",
+      "-fsanitize=address",
+      "-fno-omit-frame-pointer",
+      "-g",
+      "-std=gnu++23",
+      "-c",
+      "-o",
+      "CMakeFiles/HyperstreamRemixer.dir/src/HyperstreamRemixer/Studio/studio.c++.o",
+      "/home/anafro/Root/C++/Hyperstream-Remixer/src/HyperstreamRemixer/Studio/studio.c++"
+    ],
+    "directory": "/home/anafro/Root/C++/Hyperstream-Remixer/build",
+    "file": "/home/anafro/Root/C++/Hyperstream-Remixer/src/HyperstreamRemixer/Studio/studio.c++",
+    "output": "/home/anafro/Root/C++/Hyperstream-Remixer/build/CMakeFiles/HyperstreamRemixer.dir/src/HyperstreamRemixer/Studio/studio.c++.o"
   },
   {
     "arguments": [
