@@ -1,10 +1,11 @@
 {
-    "version": "1.0.0",
-    "name": "hyperstream-remixer",
-    "dependencies": [
-        "sdl2",
-        "sdl2-mixer",
-        "minimp3",
-        "glfw3"
-    ]
+  "version": "1.0.0",
+  "name": "hyperstream-remixer",
+  "dependencies": [
+    "sdl2",
+    "sdl2-mixer",
+    "minimp3",
+    "glfw3",
+    "argparse"
+  ]
 }
