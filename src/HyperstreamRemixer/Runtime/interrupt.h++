@@ -1,3 +1,4 @@
+#pragma once
 #include "HyperstreamRemixer/Environment/configuration.h++"
 #include "HyperstreamRemixer/Macros/coerce-inline.h++"
 #include "HyperstreamRemixer/Macros/expression-stringify.h++"
