@@ -1,4 +1,5 @@
 #pragma once
+#include "HyperstreamRemixer/Sound/Waveform/waveform-types.h++"
 #include <HyperstreamRemixer/Macros/coerce-inline.h++>
 #include <HyperstreamRemixer/Memory/unit.h++>
 #include <HyperstreamRemixer/Sound/Effects/audio-effect.h++>
@@ -27,8 +28,8 @@ class Audio final {
 
     ~Audio();
     void play();
-    static auto from_mp3_file(std::initializer_list<AudioEffect *> &&effects, const std::string &file_path, audio_fx_behavior_t fx_behavior = APPLY_FX_NOW) -> Unit<Audio>;
     void to_mp3_file(const std::string &file_path);
+    static auto from_mp3_file(std::vector<AudioEffect *> &&effects, const std::string &file_path, audio_fx_behavior_t fx_behavior = APPLY_FX_NOW) -> Unit<Audio>;
 
   protected:
     std::vector<AudioEffect *> effects;

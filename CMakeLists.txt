@@ -39,6 +39,10 @@ elseif(UNIX)
 endif()
 
 
+find_package(mp3lame CONFIG REQUIRED)
+target_link_libraries(HyperstreamRemixer PRIVATE mp3lame::mp3lame)
+find_package(argparse CONFIG REQUIRED)
+target_link_libraries(HyperstreamRemixer PRIVATE argparse::argparse)
 target_include_directories(HyperstreamRemixer PRIVATE src)
 find_package(glfw3 CONFIG REQUIRED)
 target_link_libraries(HyperstreamRemixer PRIVATE glfw)

@@ -6,6 +6,7 @@
     "sdl2-mixer",
     "minimp3",
     "glfw3",
-    "argparse"
+    "argparse",
+    "mp3lame"
   ]
 }

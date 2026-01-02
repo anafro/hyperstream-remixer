@@ -17,6 +17,9 @@ enum InterruptionNature : interruption_nature_ordinal_t {
     COPY_OF_WILD_MEMORY = 0x03,
     COPY_OF_MEMORY_WITH_UNKNOWN_TYPE = 0x04,
     REMOVE_VIEWER_FROM_VIEWER = 0x05,
+    MESSAGE_EXCHANGE_FEATURE_NOT_IMPLEMENTED = 0x06,
+    CLI_BAD_SYNTAX = 0x07,
+    INPUT_AUDIO_FILEPATH_NOT_PROVIDED = 0x08,
 
 };
 
@@ -27,7 +30,11 @@ __REMIXER_COERCE_INLINE void interrupt(InterruptionNature interruption_nature) {
         {COPY_OF_DANGLED_MEMORY, "Copy of memory pointed by a dangling pointer"},
         {COPY_OF_WILD_MEMORY, "Copy of memory pointed by a wild pointer"},
         {COPY_OF_MEMORY_WITH_UNKNOWN_TYPE, "Copy of a memory pointed by a pointer with unknown type"},
-        {REMOVE_VIEWER_FROM_VIEWER, "Remove a viewer unit from another viewer unit"}};
+        {REMOVE_VIEWER_FROM_VIEWER, "Remove a viewer unit from another viewer unit"},
+        {MESSAGE_EXCHANGE_FEATURE_NOT_IMPLEMENTED, "Message exchange feature is not implemented"},
+        {CLI_BAD_SYNTAX, "Bad syntax of the command to CLI"},
+        {INPUT_AUDIO_FILEPATH_NOT_PROVIDED, "Input audio filepath was not provided"},
+    };
 
     const auto message = map_get(interruption_messages, interruption_nature).value_or("(no message)");
 

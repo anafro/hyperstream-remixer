@@ -117,7 +117,7 @@ void Audio::to_mp3_file(const std::string &file_path) {
 }
 
 [[nodiscard]]
-auto Audio::from_mp3_file(std::initializer_list<AudioEffect *> &&effects, const std::string &file_path, const audio_fx_behavior_t fx_behavior) -> Unit<Audio> {
+auto Audio::from_mp3_file(std::vector<AudioEffect *> &&effects, const std::string &file_path, const audio_fx_behavior_t fx_behavior) -> Unit<Audio> {
     if (not std::filesystem::exists(file_path)) {
         throw AudioFileNotFoundException(file_path);
     }
@@ -129,7 +129,7 @@ auto Audio::from_mp3_file(std::initializer_list<AudioEffect *> &&effects, const 
     auto audio_buffer = Unit<wf_amplitude_t>::wrap_array(C_ARRAY, mp3dec_file_info.buffer, mp3dec_file_info.samples);
 
     return Unit<Audio>::wrap_object(CXX, new Audio(
-                                             effects,
+                                             std::move(effects),
                                              AUDIO_S16,
                                              std::move(audio_buffer),
                                              mp3dec_file_info.hz,
