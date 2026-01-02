@@ -5,7 +5,9 @@
 #include <HyperstreamRemixer/Sound/Waveform/waveform-types.h++>
 #include <algorithm>
 #include <filesystem>
+#include <fstream>
 #include <iostream>
+#include <lame/lame.h>
 #include <minimp3/minimp3.h>
 #include <minimp3/minimp3_ex.h>
 
@@ -86,6 +88,32 @@ void Audio::play() {
     }
 
     SDL_CloseAudioDevice(dev);
+}
+
+void Audio::to_mp3_file(const std::string &file_path) {
+    lame_t lame = lame_init();
+    lame_set_in_samplerate(lame, frequency);
+    lame_set_num_channels(lame, static_cast<int>(channels));
+    lame_set_VBR(lame, vbr_default);
+    lame_init_params(lame);
+
+    std::ofstream out(file_path, std::ios::binary);
+
+    std::vector<unsigned char> mp3buf(static_cast<std::size_t>(1.25 * buffer_with_effects.length() + 7200));
+
+    int written = lame_encode_buffer_interleaved(
+        lame,
+        *buffer_with_effects,
+        static_cast<int>(buffer_with_effects.length() / channels),
+        mp3buf.data(),
+        static_cast<int>(mp3buf.size()));
+
+    out.write(reinterpret_cast<char *>(mp3buf.data()), written);
+
+    written = lame_encode_flush(lame, mp3buf.data(), static_cast<int>(mp3buf.size()));
+    out.write(reinterpret_cast<char *>(mp3buf.data()), written);
+
+    lame_close(lame);
 }
 
 [[nodiscard]]

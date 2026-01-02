@@ -28,6 +28,7 @@ class Audio final {
     ~Audio();
     void play();
     static auto from_mp3_file(std::initializer_list<AudioEffect *> &&effects, const std::string &file_path, audio_fx_behavior_t fx_behavior = APPLY_FX_NOW) -> Unit<Audio>;
+    void to_mp3_file(const std::string &file_path);
 
   protected:
     std::vector<AudioEffect *> effects;
