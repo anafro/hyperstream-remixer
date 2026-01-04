@@ -92,9 +92,10 @@ auto main(const int argc, char *argv[]) noexcept -> int {
 
             const std::string input_filepath = argument_parser.get("-i");
             std::vector<AudioEffect *> effects{
+                new Remainder(3s),
                 new Speed(speed),
-                new Reverb(reverb),
                 new Lowpass(lowpass),
+                new Reverb(reverb),
                 new Noise(noise),
                 new Crackle(crackle)};
 
