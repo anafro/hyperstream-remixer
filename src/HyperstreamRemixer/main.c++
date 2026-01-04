@@ -24,7 +24,7 @@ auto main(const int argc, char *argv[]) noexcept -> int {
     try {
         initialize_remixer();
         {
-            argparse::ArgumentParser argument_parser{"Hyperstream Remixer"};
+            argparse::ArgumentParser argument_parser{"HyperstreamRemixer"};
 
             argument_parser
                 .add_argument("-i", "--input")
