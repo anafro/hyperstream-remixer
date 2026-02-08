@@ -1,15 +1,16 @@
 #include "HyperstreamRemixer/Exceptions/hyperstream-exception.h++"
 #include "HyperstreamRemixer/Sound/Effects/crackle.h++"
 #include "HyperstreamRemixer/Sound/Effects/lowpass.h++"
+#include "HyperstreamRemixer/Sound/Effects/noise.h++"
+#include "HyperstreamRemixer/Sound/Effects/remainder.h++"
 #include "HyperstreamRemixer/Sound/Effects/reverb.h++"
 #include "HyperstreamRemixer/Sound/Effects/speed.h++"
-#include <HyperstreamRemixer/Debug/visual-audio-debugger.h++>
 #include <HyperstreamRemixer/Runtime/interrupt.h++>
 #include <HyperstreamRemixer/Sound/Buffering/audio.h++>
 #include <HyperstreamRemixer/Sound/Effects/eq.h++>
 #include <HyperstreamRemixer/Sound/Mp3/audio-system.h++>
-#include <HyperstreamRemixer/Studio/studio.h++>
 #include <argparse/argparse.hpp>
+#include <fmt/format.h>
 #include <iostream>
 
 using namespace std::chrono_literals;
@@ -17,7 +18,6 @@ using namespace HyperstreamRemixer::Sound::Buffering;
 using namespace HyperstreamRemixer::Exceptions;
 using namespace HyperstreamRemixer::Sound;
 using namespace HyperstreamRemixer::Sound::Effects;
-using namespace HyperstreamRemixer::Studio;
 using namespace HyperstreamRemixer::Runtime;
 
 auto main(const int argc, char *argv[]) noexcept -> int {
@@ -39,7 +39,7 @@ auto main(const int argc, char *argv[]) noexcept -> int {
                 .add_argument("-s", "--speed")
                 .scan<'f', fx_speed_t>()
                 .default_value(fx_speed_default)
-                .help(std::format("speed between {}, and {}", fx_speed_min, fx_speed_max))
+                .help(fmt::format("speed between {}, and {}", fx_speed_min, fx_speed_max))
                 .store_into(speed);
 
             fx_reverb_t reverb;
@@ -47,7 +47,7 @@ auto main(const int argc, char *argv[]) noexcept -> int {
                 .add_argument("-r", "--reverb")
                 .scan<'f', fx_reverb_t>()
                 .default_value(fx_reverb_default)
-                .help(std::format("reverb between {}, and {}", fx_reverb_min, fx_reverb_max))
+                .help(fmt::format("reverb between {}, and {}", fx_reverb_min, fx_reverb_max))
                 .store_into(reverb);
 
             fx_lowpass_parameter_t lowpass;
@@ -55,7 +55,7 @@ auto main(const int argc, char *argv[]) noexcept -> int {
                 .add_argument("-l", "--lowpass")
                 .scan<'f', fx_lowpass_parameter_t>()
                 .default_value(fx_lowpass_cutoff_default)
-                .help(std::format("lowpass between {}, and {}", fx_lowpass_cutoff_min, fx_lowpass_cutoff_max))
+                .help(fmt::format("lowpass between {}, and {}", fx_lowpass_cutoff_min, fx_lowpass_cutoff_max))
                 .store_into(lowpass);
 
             fx_noise_strength_t noise;
@@ -63,7 +63,7 @@ auto main(const int argc, char *argv[]) noexcept -> int {
                 .add_argument("-n", "--noise")
                 .scan<'f', fx_noise_strength_t>()
                 .default_value(fx_noise_strength_default)
-                .help(std::format("noise between {}, and {}", fx_noise_strength_min, fx_noise_strength_max))
+                .help(fmt::format("noise between {}, and {}", fx_noise_strength_min, fx_noise_strength_max))
                 .store_into(noise);
 
             fx_crackle_probability_t crackle;
@@ -71,14 +71,14 @@ auto main(const int argc, char *argv[]) noexcept -> int {
                 .add_argument("-c", "--crackle")
                 .scan<'f', fx_crackle_probability_t>()
                 .default_value(fx_crackle_probability_default)
-                .help(std::format("crackle between {}, and {}", fx_crackle_probability_min, fx_crackle_probability_max))
+                .help(fmt::format("crackle between {}, and {}", fx_crackle_probability_min, fx_crackle_probability_max))
                 .store_into(crackle);
 
             try {
                 argument_parser.parse_args(argc, argv);
             } catch (const std::exception &argument_parsing_exception) {
-                std::println(stderr, "{}", argument_parsing_exception.what());
-                std::println(stderr, "{}", argument_parser.help().str());
+                fmt::println(stderr, "{}\n", argument_parsing_exception.what());
+                fmt::println(stderr, "{}\n", argument_parser.help().str());
                 interrupt(CLI_BAD_SYNTAX);
             }
 
