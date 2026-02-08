@@ -1,18 +1,16 @@
 #pragma once
-#include "HyperstreamRemixer/Debug/print.h++"
-#include "HyperstreamRemixer/Multithreading/optional-lock.h++"
 #include <HyperstreamRemixer/Macros/coerce-inline.h++>
 #include <HyperstreamRemixer/Memory/Exceptions/allocation-clone-copy-exception.h++>
 #include <HyperstreamRemixer/Memory/Exceptions/unknown-memory-cleanup-strategy-exception.h++>
+#include <HyperstreamRemixer/Multithreading/optional-lock.h++>
 #include <HyperstreamRemixer/Runtime/interrupt.h++>
+#include <algorithm>
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
-#include <format>
+#include <fmt/format.h>
 #include <mutex>
 #include <type_traits>
-#include <utility>
-#include <vector>
 
 namespace HyperstreamRemixer::Memory {
 using namespace Exceptions;
@@ -425,7 +423,7 @@ void Unit<T>::replace(PointerType replacement_pointer_type, T *memory_replacemen
 
 template <typename T>
 [[nodiscard]] auto Unit<T>::to_string() const -> std::string {
-    return std::format(
+    return fmt::format(
         "<{}{} {} {} BYTE UNIT<{}> @ {:x} ({} UNITS FOR MEMORY)>",
         name == "" ? "" : name + ": ",
         pointer_type_to_string(pointer_type),
