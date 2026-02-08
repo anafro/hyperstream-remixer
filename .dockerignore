@@ -1,0 +1,17 @@
+/.cache/
+/.git/
+/.idea/
+/build/
+/music/
+/vcpkg_installed/
+/.clang-format
+/.clang-tidy
+/.dockerignore
+/.gitignore
+/.gitmodules
+/.vcpkg-root
+/Dockerfile
+/README.md
+/compile_commands.json
+*.zst
+/imgui.ini
