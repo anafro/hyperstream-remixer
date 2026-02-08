@@ -5,8 +5,8 @@
 #include <HyperstreamRemixer/Maps/safe-access.h++>
 #include <cstdint>
 #include <cstdlib>
+#include <fmt/format.h>
 #include <map>
-#include <print>
 
 namespace HyperstreamRemixer::Runtime {
 using namespace Maps;
@@ -39,13 +39,13 @@ __REMIXER_COERCE_INLINE void interrupt(InterruptionNature interruption_nature) {
     const auto message = map_get(interruption_messages, interruption_nature).value_or("(no message)");
 
 #ifdef REMIXER_EXIT_ON_INTERRUPTION_ON
-    std::println(stderr, "Remixer is interrupted by an error: {} (interruption nature {:#x})", message, static_cast<interruption_nature_ordinal_t>(interruption_nature));
-    std::println(stderr, "To disable exiting on interruption for debugging purposes, comment the {} macros in Environment/configuration.h++", STR_EXPR(REMIXER_EXIT_ON_INTERRUPTION_ON));
+    fmt::println(stderr, "Remixer is interrupted by an error: {} (interruption nature {:#x})", message, static_cast<interruption_nature_ordinal_t>(interruption_nature));
+    fmt::println(stderr, "To disable exiting on interruption for debugging purposes, comment the {} macros in Environment/configuration.h++", STR_EXPR(REMIXER_EXIT_ON_INTERRUPTION_ON));
     std::exit(interruption_nature);
 #else
-    std::println(stderr, "Remixer came across with an interruption condition: {} (interruption nature {:#x})", message, static_cast<interruption_nature_ordinal_t>(interruption_nature));
-    std::println(stderr, "Yet Remixer HAS NOT EXITED, since exiting was disabled.");
-    std::println(stderr, "To enable back exiting on interruption, uncomment the {} macros in Environment/configuration.h++", STR_EXPR(REMIXER_EXIT_ON_INTERRUPTION_ON));
+    fmt::println(stderr, "Remixer came across with an interruption condition: {} (interruption nature {:#x})", message, static_cast<interruption_nature_ordinal_t>(interruption_nature));
+    fmt::println(stderr, "Yet Remixer HAS NOT EXITED, since exiting was disabled.");
+    fmt::println(stderr, "To enable back exiting on interruption, uncomment the {} macros in Environment/configuration.h++", STR_EXPR(REMIXER_EXIT_ON_INTERRUPTION_ON));
 #endif
 }
 } // namespace HyperstreamRemixer::Runtime

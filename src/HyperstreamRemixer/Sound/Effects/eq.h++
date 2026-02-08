@@ -1,6 +1,6 @@
 #pragma once
 #include <array>
-#include <format>
+#include <fmt/format.h>
 
 #include "audio-effect.h++"
 #include <HyperstreamRemixer/Sound/Effects/Exceptions/eq-ascii-format-exception.h++>
@@ -75,7 +75,7 @@ static constexpr auto calculate_ascii_scale_length(const std::string &scale) -> 
 [[nodiscard]]
 static constexpr auto calculate_ascii_band_gain(const std::size_t band_max_length, const std::string &band) -> eq_gain_t {
     if (band.length() > band_max_length) {
-        throw Exceptions::EQAsciiFormatException(std::format("An EQ ASCII band with the length of {} exceed your scale with the length of {}", band.length(), band_max_length));
+        throw Exceptions::EQAsciiFormatException(fmt::format("An EQ ASCII band with the length of {} exceed your scale with the length of {}", band.length(), band_max_length));
     }
 
     return 200_percent * (static_cast<double>(band.length()) / static_cast<double>(band_max_length));

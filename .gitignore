@@ -5,3 +5,4 @@ vcpkg_installed/
 imgui.ini
 .vcpkg-root
 *.zst
+/compile_commands.json
