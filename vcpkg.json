@@ -1,12 +1,26 @@
 {
-  "version": "1.0.0",
-  "name": "hyperstream-remixer",
-  "dependencies": [
-    "sdl2",
-    "sdl2-mixer",
-    "minimp3",
-    "glfw3",
-    "argparse",
-    "mp3lame"
-  ]
+    "name": "hyperstream-remixer",
+    "version": "0.0.0-unstable",
+    "dependencies": [
+        "argparse",
+        "minimp3",
+        "mp3lame",
+        "amqpcpp",
+        "fmt",
+        {
+            "name": "sdl2",
+            "default-features": false,
+            "features": [
+                "wayland",
+                "x11"
+            ]
+        },
+        {
+            "name": "aws-sdk-cpp",
+            "default-features": false,
+            "features": [
+                "s3"
+            ]
+        }
+    ]
 }
