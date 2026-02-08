@@ -2,6 +2,7 @@
 #include "HyperstreamRemixer/Sound/Waveform/amplitude-clipping.h++"
 #include "HyperstreamRemixer/Sound/Waveform/waveform-types.h++"
 #include <cmath>
+#include <numbers>
 
 namespace HyperstreamRemixer::Sound::Effects {
 using namespace Waveform;
